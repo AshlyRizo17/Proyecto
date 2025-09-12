@@ -1,0 +1,26 @@
+/* Botón de volver */
+.volver-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.volver-btn:hover {
+    
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+    background: linear-gradient(45deg, #ff5252, #e53935);
+}
+

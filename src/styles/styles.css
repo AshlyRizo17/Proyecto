@@ -1,0 +1,278 @@
+ * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #2d9cbe, #aee4c5,#45a049);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: rgb(183, 228, 255);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 400px;
+            max-width: 90vw;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-header h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .form-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ffffff;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn-primary {
+           background: linear-gradient(135deg, #2d9cbe,#45a049);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .form-footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .dashboard {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .dashboard h2 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .user-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .user-info h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .user-info p {
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .session-history {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: left;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .session-item {
+            padding: 8px;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .lockout-warning {
+            background: #fff3cd;
+            color: #856404;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ffeaa7;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .form-group input,
+        .form-group select {
+        width: 100%;
+        padding: 12px;
+        border-radius: 12px;
+        border: 1px solid #ccc;
+        background: #f9f9f9;
+        font-size: 0.95rem;
+        transition: 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+        border-color: #667eea;
+        background: #fff;
+        box-shadow: 0 0 6px rgba(102,126,234,0.5);
+        }
+
+        /* --- RADIO BUTTONS --- */
+        .radio-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 5px;
+        }
+
+        .radio-option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.95rem;
+        color: #444;
+        }
+
+        .radio-option input[type="radio"] {
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border: 2px solid #667eea;
+        border-radius: 50%;
+        display: inline-block;
+        position: relative;
+        cursor: pointer;
+        transition: 0.3s;
+        }
+
+        .radio-option input[type="radio"]:checked {
+        background: radial-gradient(circle at center, #667eea 40%, transparent 41%);
+        border-color: #5a67d8;
+        }
+
+        .radio-option label {
+        cursor: pointer;
+        }
+
+        /* --- SELECTS --- */
+        .form-group select {
+        cursor: pointer;
+        background: #fff;
+        border: 1px solid #ccc;
+        }
+
+        .form-group select:hover {
+        border-color: #5a67d8;
+        }
+
+        /* --- SEPARACIÓN ENTRE CAMPOS --- */
+        .form-group {
+        margin-bottom: 18px;
+        }
+     

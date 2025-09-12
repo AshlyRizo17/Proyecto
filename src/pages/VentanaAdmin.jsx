@@ -1,7 +1,7 @@
 import React from "react";
-import "../styles/VentanaAdmin.css"; // Importa tu CSS
+import "../styles/ventana_admin.css"; // Importa tu CSS
 
-export default function AdminPanel() {
+export default function VentanaAdmin() {
   const volverAlSelector = () => {
     console.log("Volviendo al selector...");
   };

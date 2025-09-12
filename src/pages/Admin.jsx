@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../styles/admin.css"; // tu CSS
 import logo from "../assets/img/logo.png"; // logo
 
-const ZeroWaste = () => {
+const Admin = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -333,4 +333,5 @@ const ZeroWaste = () => {
     </>
   );
 };
+
 export default Admin;

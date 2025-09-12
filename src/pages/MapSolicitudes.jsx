@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import "leaflet/dist/leaflet.css";
+import "../styles/MapSolicitudes.css"; // Importa tus estilos CSS
 
-export default function SecureMap() {
+export default function MapSolicitudes() {
   const [map, setMap] = useState(null);
   const [privateMode, setPrivateMode] = useState(true);
   const [requestCode, setRequestCode] = useState("");

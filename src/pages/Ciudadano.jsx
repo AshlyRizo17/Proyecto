@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import "../assets/css/admin.css"; // tu hoja de estilos
+import "../styles/admin.css"; // tu hoja de estilos
 import logo from "../assets/img/logo.png"; // importa tu logo
 
-const ZeroWaste = () => {
+
+const Ciudadano = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -126,5 +127,4 @@ const ZeroWaste = () => {
     </>
   );
 };
-
-export default ZeroWaste;
+export default Ciudadano;

@@ -1,4 +1,4 @@
-import SecureMap from "../components/SecureMap";
+//import SecureMap from "../components/Secu";
 
 export default function GpsPage() {
   return (

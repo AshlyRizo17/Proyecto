@@ -1,191 +1,194 @@
-import React, { useEffect } from "react";
-import "./ventana_ciudadano.css"; // Importa tu CSS
-
-export default function CitizenPanel() {
+import React, { useEffect } from 'react';
+import "../styles/ventana_ciudadano.css"; // Importa tu CSS
+export default function VentanaCiudadano() {
   const volverAlInicio = () => {
-    window.location.href = "index.html";
+    alert('Navegando al inicio...');
+    // window.location.href = 'index.html';
   };
 
   const actualizarEstadisticasCiudadano = () => {
-    console.log("Actualizando estadísticas del ciudadano...");
-    // Aquí podrías hacer llamadas a API reales
+    console.log('Actualizando estadísticas del ciudadano...');
   };
 
-  const mostrarNotificacion = (mensaje, tipo = "info") => {
+  const handleCardClick = (cardTitle, modalId) => {
+    console.log('Abriendo modal:', modalId);
+    alert(`Clickeaste en: ${cardTitle}`);
+  };
+
+  const mostrarNotificacion = (mensaje, tipo = 'info') => {
     console.log(`Notificación ${tipo}: ${mensaje}`);
-    // Aquí puedes implementar un sistema de notificaciones tipo toast
   };
 
   useEffect(() => {
-    console.log("Panel de ciudadano cargado correctamente");
+    console.log('Panel de ciudadano cargado correctamente');
     actualizarEstadisticasCiudadano();
   }, []);
 
+  const statsData = [
+    { number: '3', label: 'Solicitudes Activas' },
+    { number: '12', label: 'Recolecciones Completadas' },
+    { number: '2', label: 'Notificaciones Nuevas' },
+    { number: '95%', label: 'Separación de Residuos' }
+  ];
+
+  const cardData = [
+    {
+      id: 'requests-modal',
+      icon: 'fas fa-file-alt',
+      title: 'Ver Mis Solicitudes',
+      description: 'Consulta el estado de todas tus solicitudes de recolección y servicios especiales',
+      features: [
+        { icon: 'fas fa-check', text: '3 activas', hasStatus: true, statusClass: 'status-active' },
+        { icon: 'fas fa-check', text: 'Historial completo' },
+        { icon: 'fas fa-check', text: 'Estado en tiempo real' },
+        { icon: 'fas fa-check', text: 'Fechas programadas' }
+      ]
+    },
+    {
+      id: 'new-request-modal',
+      icon: 'fas fa-plus-circle',
+      title: 'Solicitar Nueva Recolección',
+      description: 'Programa una nueva recolección de residuos especiales o servicios adicionales',
+      features: [
+        { icon: 'fas fa-check', text: 'Residuos especiales' },
+        { icon: 'fas fa-check', text: 'Recolección a domicilio' },
+        { icon: 'fas fa-check', text: 'Programar fecha' },
+        { icon: 'fas fa-check', text: 'Seguimiento automático' }
+      ]
+    },
+    {
+      id: 'notifications-modal',
+      icon: 'fas fa-bell',
+      title: 'Ver Notificaciones Recibidas',
+      description: 'Mantente informado sobre el estado de tus servicios y mensajes importantes',
+      features: [
+        { icon: 'fas fa-check', text: '2 nuevas', hasStatus: true, statusClass: 'status-pending' },
+        { icon: 'fas fa-check', text: 'Cambios en horarios' },
+        { icon: 'fas fa-check', text: 'Confirmaciones' },
+        { icon: 'fas fa-check', text: 'Alertas del sistema' }
+      ]
+    },
+    {
+      id: 'routes-modal',
+      icon: 'fas fa-map-marked-alt',
+      title: 'Consultar Áreas y Rutas Ecológicas',
+      description: 'Explora las zonas de recolección, puntos ecológicos y rutas disponibles',
+      features: [
+        { icon: 'fas fa-check', text: 'Mapa interactivo' },
+        { icon: 'fas fa-check', text: 'Puntos de reciclaje' },
+        { icon: 'fas fa-check', text: 'Horarios de servicio' },
+        { icon: 'fas fa-check', text: 'Ubicación de contenedores' }
+      ]
+    },
+    {
+      id: 'resources-modal',
+      icon: 'fas fa-book-open',
+      title: 'Acceder a Recursos y Guías',
+      description: 'Aprende sobre separación de residuos, reciclaje y prácticas sostenibles',
+      features: [
+        { icon: 'fas fa-check', text: 'Guías de separación' },
+        { icon: 'fas fa-check', text: 'Tips ecológicos' },
+        { icon: 'fas fa-check', text: 'Videos educativos' },
+        { icon: 'fas fa-check', text: 'Documentos descargables' }
+      ]
+    },
+    {
+      id: 'profile-modal',
+      icon: 'fas fa-user-edit',
+      title: 'Actualizar Mis Datos',
+      description: 'Mantén tu información personal y preferencias de contacto actualizadas',
+      features: [
+        { icon: 'fas fa-check', text: 'Perfil verificado', hasStatus: true, statusClass: 'status-active' },
+        { icon: 'fas fa-check', text: 'Información de contacto' },
+        { icon: 'fas fa-check', text: 'Preferencias de notificación' },
+        { icon: 'fas fa-check', text: 'Configuración de privacidad' }
+      ]
+    }
+  ];
+
   return (
     <>
-      {/* Botón Volver */}
-      <a href="../public/ciudadano.html" className="volver-btn" onClick={volverAlInicio}>
-        <span className="volver-icon">←</span>
-        Volver
-      </a>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+      
+      <div className="citizen-dashboard">
+        {/* Botón Volver */}
+        <button className="volver-btn" onClick={volverAlInicio}>
+          <span className="volver-icon">←</span>
+          Volver
+        </button>
 
-      {/* Header */}
-      <header className="admin-header">
-        <div className="logo">
-          <span></span>
-        </div>
-        <div className="admin-info">
-          <div className="admin-avatar">C</div>
-          <div>
-            <div style={{ fontWeight: 600 }}>Ciudadano</div>
-            <div style={{ fontSize: "0.9rem", opacity: 0.8 }}>Portal Ciudadano</div>
+        {/* Header */}
+        <header className="admin-header">
+          <div className="logo">
+            <span></span>
           </div>
-          <a href="./index.html" className="logout-btn">
-            <i className="fas fa-sign-out-alt"></i>
-            Cerrar Sesión
-          </a>
-        </div>
-      </header>
-
-      {/* Main Container */}
-      <div className="admin-container">
-        {/* Welcome Section */}
-        <div className="welcome-section">
-          <h1>Área Ciudadano</h1>
-          <p>Consulta tus solicitudes, recibe notificaciones y accede a recursos educativos</p>
-        </div>
-
-        {/* Stats Section */}
-        <div className="stats-section">
-          <h2 className="stats-title">Mi Actividad</h2>
-          <div className="stats-grid">
-            <div className="stat-card">
-              <div className="stat-number">3</div>
-              <div className="stat-label">Solicitudes Activas</div>
+          <div className="admin-info">
+            <div className="admin-avatar">C</div>
+            <div>
+              <div style={{ fontWeight: 600 }}>Ciudadano</div>
+              <div style={{ fontSize: '0.9rem', opacity: 0.8 }}>Portal Ciudadano</div>
             </div>
-            <div className="stat-card">
-              <div className="stat-number">12</div>
-              <div className="stat-label">Recolecciones Completadas</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-number">2</div>
-              <div className="stat-label">Notificaciones Nuevas</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-number">95%</div>
-              <div className="stat-label">Separación de Residuos</div>
-            </div>
+            <button className="logout-btn" onClick={() => alert('Cerrando sesión...')}>
+              <i className="fas fa-sign-out-alt"></i>
+              Cerrar Sesión
+            </button>
           </div>
-        </div>
+        </header>
 
-        {/* Citizen Cards Grid */}
-        <div className="admin-grid">
-          {/* Ver mis solicitudes */}
-          <div className="admin-card" data-modal="requests-modal">
-            <div className="card-icon">
-              <i className="fas fa-file-alt"></i>
-            </div>
-            <a href="./solicitud_ciu.html">
-              <h3>Ver Mis Solicitudes</h3>
-              <p>Consulta el estado de todas tus solicitudes de recolección y servicios especiales</p>
-              <ul className="card-features">
-                <li><i className="fas fa-check"></i> <span className="status-indicator status-active"></span>3 activas</li>
-                <li><i className="fas fa-check"></i> Historial completo</li>
-                <li><i className="fas fa-check"></i> Estado en tiempo real</li>
-                <li><i className="fas fa-check"></i> Fechas programadas</li>
-              </ul>
-            </a>
+        {/* Main Container */}
+        <div className="admin-container">
+          {/* Welcome Section */}
+          <div className="welcome-section">
+            <h1>Área Ciudadano</h1>
+            <p>Consulta tus solicitudes, recibe notificaciones y accede a recursos educativos</p>
           </div>
 
-          {/* Solicitar nueva recolección */}
-          <div className="admin-card" data-modal="new-request-modal">
-            <div className="card-icon">
-              <i className="fas fa-plus-circle"></i>
+          {/* Stats Section */}
+          <div className="stats-section">
+            <h2 className="stats-title">Mi Actividad</h2>
+            <div className="stats-grid">
+              {statsData.map((stat, index) => (
+                <div key={index} className="stat-card">
+                  <div className="stat-number">{stat.number}</div>
+                  <div className="stat-label">{stat.label}</div>
+                </div>
+              ))}
             </div>
-            <a href="./n.recolección.html">
-              <h3>Solicitar Nueva Recolección</h3>
-              <p>Programa una nueva recolección de residuos especiales o servicios adicionales</p>
-              <ul className="card-features">
-                <li><i className="fas fa-check"></i> Residuos especiales</li>
-                <li><i className="fas fa-check"></i> Recolección a domicilio</li>
-                <li><i className="fas fa-check"></i> Programar fecha</li>
-                <li><i className="fas fa-check"></i> Seguimiento automático</li>
-              </ul>
-            </a>
           </div>
 
-          {/* Ver notificaciones */}
-          <div className="admin-card" data-modal="notifications-modal">
-            <div className="card-icon">
-              <i className="fas fa-bell"></i>
-            </div>
-            <a href="./ver_noti.html">
-              <h3>Ver Notificaciones Recibidas</h3>
-              <p>Mantente informado sobre el estado de tus servicios y mensajes importantes</p>
-              <ul className="card-features">
-                <li><i className="fas fa-check"></i> <span className="status-indicator status-pending"></span>2 nuevas</li>
-                <li><i className="fas fa-check"></i> Cambios en horarios</li>
-                <li><i className="fas fa-check"></i> Confirmaciones</li>
-                <li><i className="fas fa-check"></i> Alertas del sistema</li>
-              </ul>
-            </a>
-          </div>
-
-          {/* Consultar áreas y rutas */}
-          <div className="admin-card" data-modal="routes-modal">
-            <div className="card-icon">
-              <i className="fas fa-map-marked-alt"></i>
-            </div>
-            <a href="./consulta_area.html">
-              <h3>Consultar Áreas y Rutas Ecológicas</h3>
-              <p>Explora las zonas de recolección, puntos ecológicos y rutas disponibles</p>
-              <ul className="card-features">
-                <li><i className="fas fa-check"></i> Mapa interactivo</li>
-                <li><i className="fas fa-check"></i> Puntos de reciclaje</li>
-                <li><i className="fas fa-check"></i> Horarios de servicio</li>
-                <li><i className="fas fa-check"></i> Ubicación de contenedores</li>
-              </ul>
-            </a>
-          </div>
-
-          {/* Recursos y guías */}
-          <div className="admin-card" data-modal="resources-modal">
-            <div className="card-icon">
-              <i className="fas fa-book-open"></i>
-            </div>
-            <a href="./acceder_r.html">
-              <h3>Acceder a Recursos y Guías</h3>
-              <p>Aprende sobre separación de residuos, reciclaje y prácticas sostenibles</p>
-              <ul className="card-features">
-                <li><i className="fas fa-check"></i> Guías de separación</li>
-                <li><i className="fas fa-check"></i> Tips ecológicos</li>
-                <li><i className="fas fa-check"></i> Videos educativos</li>
-                <li><i className="fas fa-check"></i> Documentos descargables</li>
-              </ul>
-            </a>
-          </div>
-
-          {/* Actualizar datos */}
-          <div className="admin-card" data-modal="profile-modal">
-            <div className="card-icon">
-              <i className="fas fa-user-edit"></i>
-            </div>
-            <a href="./act_datos.html">
-              <h3>Actualizar Mis Datos</h3>
-              <p>Mantén tu información personal y preferencias de contacto actualizadas</p>
-              <ul className="card-features">
-                <li><i className="fas fa-check"></i> <span className="status-indicator status-active"></span>Perfil verificado</li>
-                <li><i className="fas fa-check"></i> Información de contacto</li>
-                <li><i className="fas fa-check"></i> Preferencias de notificación</li>
-                <li><i className="fas fa-check"></i> Configuración de privacidad</li>
-              </ul>
-            </a>
+          {/* Citizen Cards Grid */}
+          <div className="admin-grid">
+            {cardData.map((card) => (
+              <div 
+                key={card.id}
+                className="admin-card" 
+                onClick={() => handleCardClick(card.title, card.id)}
+              >
+                <div className="card-icon">
+                  <i className={card.icon}></i>
+                </div>
+                <h3>{card.title}</h3>
+                <p>{card.description}</p>
+                <ul className="card-features">
+                  {card.features.map((feature, index) => (
+                    <li key={index}>
+                      <i className={feature.icon}></i>
+                      {feature.hasStatus && (
+                        <span className={`status-indicator ${feature.statusClass}`}></span>
+                      )}
+                      {feature.text}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
+
+        {/* Modal Container */}
+        <div id="modal-container"></div>
       </div>
-
-      {/* Modal Container */}
-      <div id="modal-container"></div>
     </>
   );
-}
+};

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import "leaflet/dist/leaflet.css";
+import "../styles/MapPrincipal_1.css"; // Importa tus estilos CSS
 
-export default function RecoMap() {
+export default function MapPrincipal() {
   const [autoUpdate, setAutoUpdate] = useState(true);
   const [map, setMap] = useState(null);
 

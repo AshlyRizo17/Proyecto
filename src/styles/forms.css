@@ -1,0 +1,220 @@
+/* Formularios */
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #64b5f6;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    transform: translateY(-1px);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+    transition: color 0.3s ease;
+}
+
+.form-group input:focus::placeholder,
+.form-group textarea:focus::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Estilos específicos para select */
+.form-group select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 12px center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+.form-group select option {
+    background: var(--dark-bg);
+    color: var(--text-light);
+    padding: 8px;
+}
+
+/* Input de tipo password */
+.form-group input[type="password"] {
+    position: relative;
+}
+
+.form-group input[type="password"]::placeholder {
+    letter-spacing: normal;
+}
+
+/* Textarea específico */
+.form-group textarea {
+    min-height: 80px;
+    line-height: 1.5;
+}
+
+/* Estados de validación */
+.form-group.valid input,
+.form-group.valid select,
+.form-group.valid textarea {
+    border-color: var(--success-color);
+}
+
+.form-group.valid label {
+    color: var(--success-color);
+}
+
+.form-group.invalid input,
+.form-group.invalid select,
+.form-group.invalid textarea {
+    border-color: var(--danger-color);
+    background: rgba(244, 67, 54, 0.1);
+}
+
+.form-group.invalid label {
+    color: var(--danger-color);
+}
+
+/* Mensajes de error */
+.error-message {
+    color: var(--danger-color);
+    font-size: 12px;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.error-message::before {
+    content: "⚠️";
+    font-size: 12px;
+}
+
+/* Mensajes de éxito */
+.success-message {
+    color: var(--success-color);
+    font-size: 12px;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.success-message::before {
+    content: "✅";
+    font-size: 12px;
+}
+
+/* Indicador de campo requerido */
+.form-group.required label::after {
+    content: " *";
+    color: var(--danger-color);
+}
+
+/* Loading en formularios */
+.form-group.loading {
+    position: relative;
+}
+
+.form-group.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    width: 16px;
+    height: 16px;
+    margin-top: -8px;
+    border: 2px solid transparent;
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Inputs en línea */
+.form-inline {
+    display: flex;
+    gap: 10px;
+    align-items: end;
+}
+
+.form-inline .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+/* Grupos de radio/checkbox */
+.form-check-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.form-check input[type="radio"],
+.form-check input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    accent-color: var(--primary-color);
+}
+
+/* Rangos/Sliders */
+.form-group input[type="range"] {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    outline: none;
+    padding: 0;
+}
+
+.form-group input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.form-group input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+}

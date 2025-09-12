@@ -1,7 +1,7 @@
 import React from "react";
-import "./conductor.css"; // Importa tus estilos CSS
+import "../styles/admin.css"; // Importa tus estilos CSS
 
-export default function ZeroWaste() {
+export default function Conductor() {
   return (
     <>
       {/* Header */}

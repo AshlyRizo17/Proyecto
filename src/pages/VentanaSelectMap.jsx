@@ -1,13 +1,13 @@
 import React from "react";
-import "./ventana.css"; // Importa tu CSS
+import "../styles/VentanaSelecMap.css"; // Importa tu CSS
 
-export default function MapSelector() {
+export default function VentanaSelectMap() {
   const redirectToPublicMap = () => {
     window.location.href = "mapa_principal.html";
   };
 
   const redirectToPrivateMap = () => {
-    window.location.href = "mapa._solicitud.html";
+    window.location.href = "mapa_solicitud.html";
   };
 
   return (

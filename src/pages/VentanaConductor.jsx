@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import "./ventana_conductor.css"; // Importa tu CSS
+import "../styles/ventana_conductor.css"; // Importa tu CSS
 
 export default function DriverPanel() {
   const volverAlSelector = () => {
