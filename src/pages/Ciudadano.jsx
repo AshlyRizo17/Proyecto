@@ -48,7 +48,7 @@ const Ciudadano = () => {
               <li><a href="#app">La App</a></li>
               <li><a href="#testimonios">Testimonios</a></li>
               <li><a href="#contacto">Contacto</a></li>
-              <li><a href="./ventana_ciudadano.html" className="auth-link">CIUDADANO</a></li>
+              <li><a href="/ventana-ciudadano" className="auth-link">CIUDADANO</a></li>
             </ul>
           </nav>
         </div>

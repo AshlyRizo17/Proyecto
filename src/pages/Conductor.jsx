@@ -35,7 +35,7 @@ export default function Conductor() {
               <li><a href="#app">La App</a></li>
               <li><a href="#testimonios">Testimonios</a></li>
               <li><a href="#contacto">Contacto</a></li>
-              <li><a href="./ventana_conductor.html" className="auth-link">CONDUCTOR</a></li>
+              <li><a href="/ventana-conductor" className="auth-link">CONDUCTOR</a></li>
             </ul>
           </nav>
         </div>

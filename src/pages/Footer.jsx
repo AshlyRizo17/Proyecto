@@ -20,17 +20,6 @@ export default function Footer() {
           </div>
 
           <div className="footer-section">
-            <h3>Enlaces Rápidos</h3>
-            <ul className="footer-links">
-              <li><a href="#inicio"><i className="fas fa-chevron-right"></i> Inicio</a></li>
-              <li><a href="#como-funciona"><i className="fas fa-chevron-right"></i> Cómo Funciona</a></li>
-              <li><a href="#beneficios"><i className="fas fa-chevron-right"></i> Beneficios</a></li>
-              <li><a href="#app"><i className="fas fa-chevron-right"></i> La App</a></li>
-              <li><a href="#testimonios"><i className="fas fa-chevron-right"></i> Testimonios</a></li>
-            </ul>
-          </div>
-
-          <div className="footer-section">
             <h3>Recursos</h3>
             <ul className="footer-links">
               <li><a href="#"><i className="fas fa-file-pdf"></i> Guía de Separación</a></li>

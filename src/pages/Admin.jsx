@@ -16,7 +16,7 @@ const Admin = () => {
         <div className="container">
           <nav className="navbar">
             {/* Logo */}
-            <a href="./admin.html" className="logo">
+            <a href="./index.html" className="logo">
               <img src={logo} alt="Logo" className="logo" />
             </a>
 
@@ -47,7 +47,7 @@ const Admin = () => {
               <li><a href="#app">La App</a></li>
               <li><a href="#testimonios">Testimonios</a></li>
               <li><a href="#contacto">Contacto</a></li>
-              <li><a href="./ventana_admi.html" className="auth-link">ADMIN</a></li>
+              <li><a href="/ventana-admin" className="auth-link">ADMIN</a></li>
             </ul>
           </nav>
         </div>

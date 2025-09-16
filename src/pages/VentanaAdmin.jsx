@@ -9,7 +9,7 @@ export default function VentanaAdmin() {
   return (
     <>
       {/* Botón Volver */}
-      <a href="./admin.html">
+      <a href="/Index.html">
         <button
           className="volver-btn"
           onClick={volverAlSelector}

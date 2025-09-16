@@ -1,12 +1,27 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./pages/Navbar.jsx";
-import Footer from "./pages/Footer.jsx";   
 
+// Layout
+import Navbar from "./pages/Navbar.jsx";
+import Footer from "./pages/Footer.jsx";
+
+// Secciones públicas (Home)
+import Hero from "./pages/Hero.jsx";
+import HowItWorks from "./pages/HowItWorks.jsx";
+import Benefits from "./pages/Benefits.jsx";
+import AppPreview from "./pages/AppPreview.jsx";
+import Testimonials from "./pages/Testimonials.jsx";
+import CTA from "./pages/CTA.jsx";
+
+// Auth
+import Register from "./pages/Register.jsx";  
+import LoginApp from "./pages/LoginApp.jsx";
+
+// Paneles / Rutas privadas
 import Admin from "./pages/Admin.jsx";
 import VentanaAdmin from "./pages/VentanaAdmin.jsx";
-import Conductor from "./pages/Conductor";
-import Ciudadano from "./pages/Ciudadano";
+import Conductor from "./pages/Conductor.jsx";
+import Ciudadano from "./pages/Ciudadano.jsx";
 import VentanaCiudadano from "./pages/VentanaCiudadano.jsx";
 import VentanaConductor from "./pages/VentanaConductor.jsx";
 import VentanaSelectMap from "./pages/VentanaSelectMap.jsx";
@@ -17,9 +32,31 @@ import Crud from "./pages/Crud.jsx";
 function App() {
   return (
     <Router>
-      <Navbar /> {/* 👈 Aquí sí aparece la barra de navegación */}
-      
+      <Navbar />
+
       <Routes>
+        {/* Página principal */}
+        <Route
+          path="/"
+          element={
+            <>
+              <Hero />
+              <CTA />
+            </>
+          }
+        />
+
+        {/* Secciones independientes */}
+        <Route path="/how-it-works" element={<HowItWorks />} />
+        <Route path="/benefits" element={<Benefits />} />
+        <Route path="/the-app" element={<AppPreview />} />
+        <Route path="/testimonials" element={<Testimonials />} />
+
+        {/* Auth */}
+        <Route path="/register" element={<Register />} />  
+        <Route path="/login" element={<LoginApp />} />  
+
+        {/* Paneles adicionales */}
         <Route path="/MapaPrincipal" element={<MapPrincipal />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/ventana-admin" element={<VentanaAdmin />} />
@@ -29,9 +66,10 @@ function App() {
         <Route path="/ventana-conductor" element={<VentanaConductor />} />
         <Route path="/ventana-select-map" element={<VentanaSelectMap />} />
         <Route path="/map-solicitudes" element={<MapSolicitudes />} />
+        <Route path="/crud" element={<Crud />} />
       </Routes>
 
-      <Footer /> {/* 👈 Aquí el footer se renderiza SIEMPRE */}
+      <Footer />
     </Router>
   );
 }
