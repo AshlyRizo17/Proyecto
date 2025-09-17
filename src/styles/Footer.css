@@ -1,6 +1,6 @@
 .footer {
-  background: #111;
-  color: #fff;
+  background: linear-gradient(135deg, #27ae60, #3dadb1); /* verde-azulado */
+  color: #ffffff;
   padding: 40px 20px;
   margin-top: 50px;
 }
@@ -27,7 +27,7 @@
 .footer-social h4 {
   font-size: 16px;
   margin-bottom: 15px;
-  color: #fff;
+  color: #04113d;
   border-bottom: 2px solid #27ae60;
   display: inline-block;
   padding-bottom: 5px;
@@ -43,7 +43,7 @@
 }
 
 .footer-links ul li a {
-  color: #aaa;
+  color: #3dadb1;
   text-decoration: none;
   transition: color 0.3s;
 }

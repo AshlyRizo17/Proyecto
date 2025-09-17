@@ -10,10 +10,7 @@ export default function VentanaAdmin() {
     <>
       {/* Botón Volver */}
       <a href="/Index.html">
-        <button
-          className="volver-btn"
-          onClick={volverAlSelector}
-        >
+        <button className="volver-btn" onClick={volverAlSelector}>
           <span className="volver-icon">←</span>
           Volver
         </button>
@@ -35,7 +32,13 @@ export default function VentanaAdmin() {
             </div>
           </div>
           <a href="./index.html">
-            <button className="logout-btn">
+            <button
+              className="logout-btn"
+              onClick={() => {
+                // Aquí hice el cambio
+                window.location.href = "/"; // Redirige al inicio
+              }}
+            >
               <i className="fas fa-sign-out-alt"></i>
               Cerrar Sesión
             </button>
@@ -119,7 +122,8 @@ export default function VentanaAdmin() {
               <h3>Configurar Rutas de Recolección</h3>
             </a>
             <p>
-              Optimiza y gestiona las rutas de recolección para máxima eficiencia
+              Optimiza y gestiona las rutas de recolección para máxima
+              eficiencia
             </p>
             <ul className="card-features">
               <li>
@@ -172,7 +176,8 @@ export default function VentanaAdmin() {
             <a href="./notificacion.html">
               <h3>Revisar Solicitudes y Notificaciones</h3>
               <p>
-                Gestiona solicitudes especiales y envía notificaciones importantes
+                Gestiona solicitudes especiales y envía notificaciones
+                importantes
               </p>
               <ul className="card-features">
                 <li>
@@ -198,9 +203,7 @@ export default function VentanaAdmin() {
             </div>
             <a href="reporte.html">
               <h3>Generar Reportes y Estadísticas</h3>
-              <p>
-                Analiza el rendimiento del sistema con reportes detallados
-              </p>
+              <p>Analiza el rendimiento del sistema con reportes detallados</p>
               <ul className="card-features">
                 <li>
                   <i className="fas fa-check"></i> Reportes automáticos

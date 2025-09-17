@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "../styles/admin.css"; // tu hoja de estilos
 import logo from "../assets/img/logo.png"; // importa tu logo
 
-
 const Ciudadano = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -17,8 +16,8 @@ const Ciudadano = () => {
         <div className="container">
           <nav className="navbar">
             {/* Logo */}
-            <a href="/" className="logo">
-              <img src={logo} alt="Logo" className="logo" />
+            <a className="logo-container">
+              <img src={logo} alt="Logo" className="logo-img" />
             </a>
 
             {/* Botón hamburguesa */}
@@ -42,13 +41,31 @@ const Ciudadano = () => {
               id="navigation-menu"
               role="menu"
             >
-              <li><a href="#inicio" className="active">Inicio</a></li>
-              <li><a href="#como-funciona">Cómo Funciona</a></li>
-              <li><a href="#beneficios">Beneficios</a></li>
-              <li><a href="#app">La App</a></li>
-              <li><a href="#testimonios">Testimonios</a></li>
-              <li><a href="#contacto">Contacto</a></li>
-              <li><a href="/ventana-ciudadano" className="auth-link">CIUDADANO</a></li>
+              <li>
+                <a href="#inicio" className="active">
+                  Inicio
+                </a>
+              </li>
+              <li>
+                <a href="#como-funciona">Cómo Funciona</a>
+              </li>
+              <li>
+                <a href="#beneficios">Beneficios</a>
+              </li>
+              <li>
+                <a href="#app">La App</a>
+              </li>
+              <li>
+                <a href="#testimonios">Testimonios</a>
+              </li>
+              <li>
+                <a href="#contacto">Contacto</a>
+              </li>
+              <li>
+                <a href="/ventana-ciudadano" className="auth-link">
+                  CIUDADANO
+                </a>
+              </li>
             </ul>
           </nav>
         </div>
@@ -61,17 +78,23 @@ const Ciudadano = () => {
             <h1>Transformando Bogotá, un residuo a la vez</h1>
             <p>
               Un proyecto innovador para gestionar residuos en sectores
-              vulnerables, usando tecnología y comunidad para crear una ciudad más
-              limpia y sostenible.
+              vulnerables, usando tecnología y comunidad para crear una ciudad
+              más limpia y sostenible.
             </p>
             <div className="hero-btns">
-              <a href="#app" className="btn">Descargar la App</a>
-              <a href="#como-funciona" className="btn btn-outline">Ver cómo funciona</a>
+              <a href="#app" className="btn">
+                Descargar la App
+              </a>
+              <a href="#como-funciona" className="btn btn-outline">
+                Ver cómo funciona
+              </a>
             </div>
 
             <div className="stats">
               <div className="stat-item">
-                <div className="stat-icon"><i className="fas fa-users"></i></div>
+                <div className="stat-icon">
+                  <i className="fas fa-users"></i>
+                </div>
                 <div className="stat-text">
                   <div className="stat-number">25,000+</div>
                   <div>Ciudadanos beneficiados</div>
@@ -79,7 +102,9 @@ const Ciudadano = () => {
               </div>
 
               <div className="stat-item">
-                <div className="stat-icon"><i className="fas fa-trash-alt"></i></div>
+                <div className="stat-icon">
+                  <i className="fas fa-trash-alt"></i>
+                </div>
                 <div className="stat-text">
                   <div className="stat-number">70%</div>
                   <div>Menos residuos en calles</div>
@@ -87,7 +112,9 @@ const Ciudadano = () => {
               </div>
 
               <div className="stat-item">
-                <div className="stat-icon"><i className="fas fa-tree"></i></div>
+                <div className="stat-icon">
+                  <i className="fas fa-tree"></i>
+                </div>
                 <div className="stat-text">
                   <div className="stat-number">45%</div>
                   <div>Más material reciclado</div>
@@ -113,9 +140,15 @@ const Ciudadano = () => {
                 comunitaria para crear una ciudad más limpia y sostenible.
               </p>
               <div className="social-links">
-                <a href="https://wa.me/qr/F56TCJUQH4GHM1"><i className="fab fa-whatsapp"></i></a>
-                <a href="https://www.facebook.com/?locale=es_LA"><i className="fab fa-facebook-f"></i></a>
-                <a href="https://www.instagram.com/"><i className="fab fa-instagram"></i></a>
+                <a href="https://wa.me/qr/F56TCJUQH4GHM1">
+                  <i className="fab fa-whatsapp"></i>
+                </a>
+                <a href="https://www.facebook.com/?locale=es_LA">
+                  <i className="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://www.instagram.com/">
+                  <i className="fab fa-instagram"></i>
+                </a>
               </div>
             </div>
           </div>

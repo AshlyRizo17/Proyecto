@@ -19,7 +19,11 @@ export default function DriverPanel() {
   return (
     <>
       {/* Botón Volver */}
-      <a href="./conductor.html" className="volver-btn" onClick={volverAlSelector}>
+      <a
+        href="./conductor.html"
+        className="volver-btn"
+        onClick={volverAlSelector}
+      >
         <span className="volver-icon">←</span>
         Volver
       </a>
@@ -33,12 +37,20 @@ export default function DriverPanel() {
           <div className="admin-avatar">C</div>
           <div>
             <div style={{ fontWeight: 600 }}>Conductor</div>
-            <div style={{ fontSize: "0.9rem", opacity: 0.8 }}>Panel de Control</div>
+            <div style={{ fontSize: "0.9rem", opacity: 0.8 }}>
+              Panel de Control
+            </div>
           </div>
-          <a href="index.html" className="logout-btn">
+          <button
+            className="logout-btn"
+            onClick={() => {
+              // Aquí hice el cambio
+              window.location.href = "/"; // Redirige al inicio
+            }}
+          >
             <i className="fas fa-sign-out-alt"></i>
             Cerrar Sesión
-          </a>
+          </button>
         </div>
       </header>
 
@@ -47,7 +59,10 @@ export default function DriverPanel() {
         {/* Welcome Section */}
         <div className="welcome-section">
           <h1>Panel de Conductor</h1>
-          <p>Visualiza tus rutas, horarios, vehículos asignados y notificaciones de servicio</p>
+          <p>
+            Visualiza tus rutas, horarios, vehículos asignados y notificaciones
+            de servicio
+          </p>
         </div>
 
         {/* Stats Section */}
@@ -81,12 +96,23 @@ export default function DriverPanel() {
               <i className="fas fa-route"></i>
             </div>
             <h3>Consultar Rutas Asignadas</h3>
-            <p>Revisa todas las rutas que tienes programadas para hoy y los próximos días</p>
+            <p>
+              Revisa todas las rutas que tienes programadas para hoy y los
+              próximos días
+            </p>
             <ul className="card-features">
-              <li><i className="fas fa-check"></i> Ver rutas del día</li>
-              <li><i className="fas fa-check"></i> Mapa de ubicaciones</li>
-              <li><i className="fas fa-check"></i> Horarios estimados</li>
-              <li><i className="fas fa-check"></i> Detalles de cada parada</li>
+              <li>
+                <i className="fas fa-check"></i> Ver rutas del día
+              </li>
+              <li>
+                <i className="fas fa-check"></i> Mapa de ubicaciones
+              </li>
+              <li>
+                <i className="fas fa-check"></i> Horarios estimados
+              </li>
+              <li>
+                <i className="fas fa-check"></i> Detalles de cada parada
+              </li>
             </ul>
           </div>
 
@@ -96,12 +122,23 @@ export default function DriverPanel() {
               <i className="fas fa-calendar-alt"></i>
             </div>
             <h3>Ver Mi Horario de Trabajo</h3>
-            <p>Consulta tu horario semanal, turnos asignados y programación de servicios</p>
+            <p>
+              Consulta tu horario semanal, turnos asignados y programación de
+              servicios
+            </p>
             <ul className="card-features">
-              <li><i className="fas fa-check"></i> Horario semanal</li>
-              <li><i className="fas fa-check"></i> Turnos especiales</li>
-              <li><i className="fas fa-check"></i> Días libres</li>
-              <li><i className="fas fa-check"></i> Horas extra</li>
+              <li>
+                <i className="fas fa-check"></i> Horario semanal
+              </li>
+              <li>
+                <i className="fas fa-check"></i> Turnos especiales
+              </li>
+              <li>
+                <i className="fas fa-check"></i> Días libres
+              </li>
+              <li>
+                <i className="fas fa-check"></i> Horas extra
+              </li>
             </ul>
           </div>
 
@@ -111,18 +148,27 @@ export default function DriverPanel() {
               <i className="fas fa-clipboard-check"></i>
             </div>
             <h3>Registrar Inicio y Fin de Recolección</h3>
-            <p>Marca el inicio y finalización de cada ruta para llevar un control preciso</p>
+            <p>
+              Marca el inicio y finalización de cada ruta para llevar un control
+              preciso
+            </p>
             <ul className="card-features">
               <li>
                 <i className="fas fa-check"></i>{" "}
-                <span className="status-indicator status-active"></span>Iniciar ruta
+                <span className="status-indicator status-active"></span>Iniciar
+                ruta
               </li>
               <li>
                 <i className="fas fa-check"></i>{" "}
-                <span className="status-indicator status-pending"></span>Marcar paradas
+                <span className="status-indicator status-pending"></span>Marcar
+                paradas
               </li>
-              <li><i className="fas fa-check"></i> Finalizar recolección</li>
-              <li><i className="fas fa-check"></i> Tiempo registrado</li>
+              <li>
+                <i className="fas fa-check"></i> Finalizar recolección
+              </li>
+              <li>
+                <i className="fas fa-check"></i> Tiempo registrado
+              </li>
             </ul>
           </div>
 
@@ -132,14 +178,24 @@ export default function DriverPanel() {
               <i className="fas fa-bell"></i>
             </div>
             <h3>Ver Notificaciones y Mensajes</h3>
-            <p>Mantente informado sobre cambios en rutas, mensajes importantes y alertas</p>
+            <p>
+              Mantente informado sobre cambios en rutas, mensajes importantes y
+              alertas
+            </p>
             <ul className="card-features">
-              <li><i className="fas fa-check"></i> Mensajes del sistema</li>
-              <li><i className="fas fa-check"></i> Cambios de ruta</li>
-              <li><i className="fas fa-check"></i> Alertas importantes</li>
+              <li>
+                <i className="fas fa-check"></i> Mensajes del sistema
+              </li>
+              <li>
+                <i className="fas fa-check"></i> Cambios de ruta
+              </li>
+              <li>
+                <i className="fas fa-check"></i> Alertas importantes
+              </li>
               <li>
                 <i className="fas fa-check"></i>{" "}
-                <span className="status-indicator status-pending"></span>2 pendientes
+                <span className="status-indicator status-pending"></span>2
+                pendientes
               </li>
             </ul>
           </div>
@@ -150,12 +206,23 @@ export default function DriverPanel() {
               <i className="fas fa-exclamation-triangle"></i>
             </div>
             <h3>Reportar Incidencias o Problemas</h3>
-            <p>Informa sobre cualquier problema durante tu ruta o con el vehículo asignado</p>
+            <p>
+              Informa sobre cualquier problema durante tu ruta o con el vehículo
+              asignado
+            </p>
             <ul className="card-features">
-              <li><i className="fas fa-check"></i> Problemas de vehículo</li>
-              <li><i className="fas fa-check"></i> Incidentes en ruta</li>
-              <li><i className="fas fa-check"></i> Retrasos o bloqueos</li>
-              <li><i className="fas fa-check"></i> Reportes de seguridad</li>
+              <li>
+                <i className="fas fa-check"></i> Problemas de vehículo
+              </li>
+              <li>
+                <i className="fas fa-check"></i> Incidentes en ruta
+              </li>
+              <li>
+                <i className="fas fa-check"></i> Retrasos o bloqueos
+              </li>
+              <li>
+                <i className="fas fa-check"></i> Reportes de seguridad
+              </li>
             </ul>
           </div>
 
@@ -165,15 +232,25 @@ export default function DriverPanel() {
               <i className="fas fa-truck"></i>
             </div>
             <h3>Mi Vehículo Asignado</h3>
-            <p>Información sobre el vehículo que tienes asignado y su estado actual</p>
+            <p>
+              Información sobre el vehículo que tienes asignado y su estado
+              actual
+            </p>
             <ul className="card-features">
               <li>
                 <i className="fas fa-check"></i>{" "}
-                <span className="status-indicator status-active"></span>Estado: Operativo
+                <span className="status-indicator status-active"></span>Estado:
+                Operativo
               </li>
-              <li><i className="fas fa-check"></i> Nivel de combustible</li>
-              <li><i className="fas fa-check"></i> Próximo mantenimiento</li>
-              <li><i className="fas fa-check"></i> Documentos del vehículo</li>
+              <li>
+                <i className="fas fa-check"></i> Nivel de combustible
+              </li>
+              <li>
+                <i className="fas fa-check"></i> Próximo mantenimiento
+              </li>
+              <li>
+                <i className="fas fa-check"></i> Documentos del vehículo
+              </li>
             </ul>
           </div>
         </div>

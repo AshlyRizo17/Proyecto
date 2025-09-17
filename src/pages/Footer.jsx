@@ -1,5 +1,5 @@
 import "../styles/Footer.css";
-
+import '@fortawesome/fontawesome-free/css/all.min.css';
 export default function Footer() {
   return (
     <footer id="contacto">

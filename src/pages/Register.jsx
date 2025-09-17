@@ -23,7 +23,7 @@ function Register() {
   };
 
   // Manejar envío del formulario
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
@@ -31,10 +31,34 @@ function Register() {
       return;
     }
 
-    setMessage("✅ Registro exitoso");
-    console.log("Datos enviados:", formData);
+    try {
+      const res = await fetch("http://localhost:3001/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-    // Aquí podrías enviar los datos a tu backend con fetch/axios
+      const data = await res.json();
+      if (data.success) {
+        setMessage("✅ Registro exitoso");
+        setFormData({
+          firstName: "",
+          lastName: "",
+          registerEmail: "",
+          documentType: "",
+          documentNumber: "",
+          populationType: "",
+          localidad: "",
+          password: "",
+          confirmPassword: "",
+        });
+      } else {
+        setMessage("⚠️ Error: " + data.error);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setMessage("⚠️ Error conectando con el servidor.");
+    }
   };
 
   return (
@@ -162,11 +186,23 @@ function Register() {
               <option value="">Seleccione...</option>
               <option value="usaquen">Usaquén</option>
               <option value="chapinero">Chapinero</option>
-              <option value="santafe">Santa Fe</option>
-              <option value="suba">Suba</option>
-              <option value="kennedy">Kennedy</option>
+              <option value="santa_fe">Santa Fe</option>
+              <option value="san_cristobal">San Cristóbal</option>
+              <option value="usme">Usme</option>
+              <option value="tunjuelito">Tunjuelito</option>
               <option value="bosa">Bosa</option>
+              <option value="kennedy">Kennedy</option>
+              <option value="fontibon">Fontibón</option>
               <option value="engativa">Engativá</option>
+              <option value="suba">Suba</option>
+              <option value="barrios_unidos">Barrios Unidos</option>
+              <option value="teusaquillo">Teusaquillo</option>
+              <option value="los_martires">Los Mártires</option>
+              <option value="antonio_narino">Antonio Nariño</option>
+              <option value="puente_aranda">Puente Aranda</option>
+              <option value="candelaria">La Candelaria</option>
+              <option value="rafael_uribe">Rafael Uribe Uribe</option>
+              <option value="ciudad_bolivar">Ciudad Bolívar</option>
             </select>
           </div>
 
@@ -182,7 +218,8 @@ function Register() {
               required
               minLength="8"
             />
-            <small className="password-hint">Mínimo 8 caracteres</small>
+            <small className="password-hint">Mínimo 8 caracteres, incluir mayúscula,
+              número y símbolo.</small>
           </div>
 
           {/* Confirmar Contraseña */}
