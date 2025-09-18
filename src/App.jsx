@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 
 // Layout
 import Navbar from "./pages/Navbar.jsx";
@@ -29,10 +29,13 @@ import MapPrincipal from "./pages/MapPrincipal.jsx";
 import MapSolicitudes from "./pages/MapSolicitudes.jsx";
 import Crud from "./pages/Crud.jsx";
 
-function App() {
+function Layout() {
+  const location = useLocation();
+
   return (
-    <Router>
-      <Navbar />
+    <>
+      {/* Navbar solo en Home */}
+      {location.pathname === "/index.html" && <Navbar />}
 
       <Routes>
         {/* Página principal */}
@@ -70,6 +73,14 @@ function App() {
       </Routes>
 
       <Footer />
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <Layout />
     </Router>
   );
 }

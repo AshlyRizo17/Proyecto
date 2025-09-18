@@ -180,3 +180,8 @@ header {
     left: 0;
   }
 }
+.navbar .active {
+  background-color: #c7f5d9; /* verde claro */
+  border-radius: 20px;
+  padding: 5px 12px;
+}

@@ -15,32 +15,86 @@ function Register() {
   });
 
   const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Validación de contraseña mejorada
+  const validatePassword = (password) => {
+    const minLength = password.length >= 8;
+    const hasLetter = /[A-Za-z]/.test(password); // Permite mayúscula O minúscula
+    const hasNumber = /\d/.test(password);
+    const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    
+    return minLength && hasLetter && hasNumber && hasSymbol;
+  };
+
+  // Validación de email
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   // Manejar cambios en inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    
+    // Limpiar mensaje cuando el usuario empiece a escribir
+    if (message) {
+      setMessage("");
+    }
   };
 
   // Manejar envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+
+    // Validaciones mejoradas
+    if (!validateEmail(formData.registerEmail)) {
+      setMessage("❌ Por favor ingresa un correo electrónico válido");
+      setIsLoading(false);
+      return;
+    }
+
+    if (!validatePassword(formData.password)) {
+      setMessage("❌ La contraseña debe tener al menos 8 caracteres, incluir una letra, número y símbolo");
+      setIsLoading(false);
+      return;
+    }
 
     if (formData.password !== formData.confirmPassword) {
       setMessage("❌ Las contraseñas no coinciden");
+      setIsLoading(false);
+      return;
+    }
+
+    // Validar que el número de documento sea válido
+    if (formData.documentNumber.length < 6) {
+      setMessage("❌ El número de documento debe tener al menos 6 dígitos");
+      setIsLoading(false);
       return;
     }
 
     try {
       const res = await fetch("http://localhost:3001/register", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        headers: { 
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          // Limpiar datos antes de enviar
+          firstName: formData.firstName.trim(),
+          lastName: formData.lastName.trim(),
+          registerEmail: formData.registerEmail.trim().toLowerCase(),
+        }),
       });
 
       const data = await res.json();
-      if (data.success) {
+      
+      if (res.ok && data.success) {
         setMessage("✅ Registro exitoso");
+        // Limpiar formulario
         setFormData({
           firstName: "",
           lastName: "",
@@ -53,11 +107,12 @@ function Register() {
           confirmPassword: "",
         });
       } else {
-        setMessage("⚠️ Error: " + data.error);
+        setMessage(`⚠️ Error: ${data.error || data.message || 'Error desconocido'}`);
       }
     } catch (error) {
-      console.error("Error:", error);
-      setMessage("⚠️ Error conectando con el servidor.");
+      setMessage("⚠️ Error en el registro");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -69,12 +124,19 @@ function Register() {
           <p>Regístrate para comenzar</p>
         </div>
 
-        {message && <div id="registerMessage">{message}</div>}
+        {message && (
+          <div 
+            id="registerMessage" 
+            className={`message ${message.includes('✅') ? 'success' : 'error'}`}
+          >
+            {message}
+          </div>
+        )}
 
         <form id="registerFormElement" onSubmit={handleSubmit}>
           {/* Nombre */}
           <div className="form-group">
-            <label htmlFor="firstName">Nombre</label>
+            <label htmlFor="firstName">Nombre *</label>
             <input
               type="text"
               id="firstName"
@@ -82,12 +144,16 @@ function Register() {
               value={formData.firstName}
               onChange={handleChange}
               required
+              minLength="2"
+              maxLength="50"
+              pattern="[A-Za-zÀ-ÿ\s]+"
+              title="Solo se permiten letras y espacios"
             />
           </div>
 
           {/* Apellido */}
           <div className="form-group">
-            <label htmlFor="lastName">Apellido</label>
+            <label htmlFor="lastName">Apellido *</label>
             <input
               type="text"
               id="lastName"
@@ -95,12 +161,16 @@ function Register() {
               value={formData.lastName}
               onChange={handleChange}
               required
+              minLength="2"
+              maxLength="50"
+              pattern="[A-Za-zÀ-ÿ\s]+"
+              title="Solo se permiten letras y espacios"
             />
           </div>
 
           {/* Correo */}
           <div className="form-group">
-            <label htmlFor="registerEmail">Correo electrónico</label>
+            <label htmlFor="registerEmail">Correo electrónico *</label>
             <input
               type="email"
               id="registerEmail"
@@ -109,32 +179,31 @@ function Register() {
               onChange={handleChange}
               required
               placeholder="ejemplo@correo.com"
+              autoComplete="email"
             />
           </div>
 
           {/* Tipo de documento */}
           <div className="form-group">
-            <label>Tipo de documento</label>
+            <label>Tipo de documento *</label>
             <div className="radio-group">
-              {["cc", "ti", "ce", "pp"].map((doc) => (
-                <div className="radio-option" key={doc}>
+              {[
+                { value: "cc", label: "Cédula de ciudadanía" },
+                { value: "ti", label: "Tarjeta de identidad" },
+                { value: "ce", label: "Cédula de extranjería" },
+                { value: "pp", label: "Pasaporte" }
+              ].map((doc) => (
+                <div className="radio-option" key={doc.value}>
                   <input
                     type="radio"
-                    id={doc}
+                    id={doc.value}
                     name="documentType"
-                    value={doc}
-                    checked={formData.documentType === doc}
+                    value={doc.value}
+                    checked={formData.documentType === doc.value}
                     onChange={handleChange}
+                    required
                   />
-                  <label htmlFor={doc}>
-                    {doc === "cc"
-                      ? "Cédula de ciudadanía"
-                      : doc === "ti"
-                      ? "Tarjeta de identidad"
-                      : doc === "ce"
-                      ? "Cédula de extranjería"
-                      : "Pasaporte"}
-                  </label>
+                  <label htmlFor={doc.value}>{doc.label}</label>
                 </div>
               ))}
             </div>
@@ -142,20 +211,24 @@ function Register() {
 
           {/* Número de documento */}
           <div className="form-group">
-            <label htmlFor="documentNumber">Número de documento</label>
+            <label htmlFor="documentNumber">Número de documento *</label>
             <input
-              type="number"
+              type="text"
               id="documentNumber"
               name="documentNumber"
               value={formData.documentNumber}
               onChange={handleChange}
               required
+              pattern="[0-9]+"
+              minLength="6"
+              maxLength="15"
+              title="Solo se permiten números, mínimo 6 dígitos"
             />
           </div>
 
           {/* Caracterización de población */}
           <div className="form-group">
-            <label htmlFor="populationType">Caracterización de población</label>
+            <label htmlFor="populationType">Caracterización de población *</label>
             <select
               id="populationType"
               name="populationType"
@@ -165,17 +238,16 @@ function Register() {
             >
               <option value="">Seleccione...</option>
               <option value="indigena">Indígena</option>
-              <option value="Afrodescendiente">Afrodescendiente</option>
-              <option value="Discapacitado">Discapacitado</option>
-              <option value="Desplazado">Desplazado</option>
+              <option value="afrodescendiente">Afrodescendiente</option>
               <option value="discapacidad">Persona con discapacidad</option>
-              <option value="Ninguna">Ninguna</option>
+              <option value="desplazado">Desplazado</option>
+              <option value="ninguna">Ninguna</option>
             </select>
           </div>
 
           {/* Localidad */}
           <div className="form-group">
-            <label htmlFor="localidad">Elija localidad</label>
+            <label htmlFor="localidad">Localidad *</label>
             <select
               id="localidad"
               name="localidad"
@@ -208,7 +280,7 @@ function Register() {
 
           {/* Contraseña */}
           <div className="form-group">
-            <label htmlFor="registerPassword">Contraseña</label>
+            <label htmlFor="registerPassword">Contraseña *</label>
             <input
               type="password"
               id="registerPassword"
@@ -217,14 +289,16 @@ function Register() {
               onChange={handleChange}
               required
               minLength="8"
+              autoComplete="new-password"
             />
-            <small className="password-hint">Mínimo 8 caracteres, incluir mayúscula,
-              número y símbolo.</small>
+            <small className="password-hint">
+              Mínimo 8 caracteres, incluir una letra, número y símbolo.
+            </small>
           </div>
 
           {/* Confirmar Contraseña */}
           <div className="form-group">
-            <label htmlFor="confirmPassword">Confirmar contraseña</label>
+            <label htmlFor="confirmPassword">Confirmar contraseña *</label>
             <input
               type="password"
               id="confirmPassword"
@@ -232,12 +306,18 @@ function Register() {
               value={formData.confirmPassword}
               onChange={handleChange}
               required
+              autoComplete="new-password"
             />
           </div>
 
           {/* Botón */}
-          <button type="submit" className="btn btn-primary" id="registerBtn">
-            Crear Cuenta
+          <button 
+            type="submit" 
+            className="btn btn-primary" 
+            id="registerBtn"
+            disabled={isLoading}
+          >
+            {isLoading ? "Creando cuenta..." : "Crear Cuenta"}
           </button>
         </form>
 

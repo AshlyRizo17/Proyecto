@@ -14,7 +14,7 @@ function LoginApp() {
 
   const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
   const validatePassword = (password) =>
-    /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\$\$:;<>,.?~\\/-]).{8,}$/.test(
+    /^(?=.*[A-Z a-z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\$\$:;<>,.?~\\/-]).{8,}$/.test(
       password
     );
 
@@ -32,7 +32,7 @@ function LoginApp() {
       return;
     }
 
-    try {
+    try {    
       const res = await axios.post("http://localhost:3001/login", {
         email,
         password,

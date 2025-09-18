@@ -1,0 +1,55 @@
+/* Layout Ciudadano */
+.ciudadano-layout {
+  display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 100vh;
+  background: linear-gradient(135deg, #1f7691, #70bd91, #257029);
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sidebar .logo-img {
+  width: 80px;
+  margin-bottom: 30px;
+}
+
+.sidebar-links {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.sidebar-links li {
+  margin: 15px 0;
+}
+
+.sidebar-links a {
+  display: block;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  padding: 10px;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+.sidebar-links a:hover,
+.sidebar-links a.active {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Contenido */
+.main-content {
+  margin-left: 240px; /* espacio para el sidebar */
+  padding: 20px;
+  width: calc(100% - 240px);
+}
