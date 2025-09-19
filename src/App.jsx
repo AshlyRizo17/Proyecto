@@ -14,7 +14,7 @@ import Testimonials from "./pages/Testimonials.jsx";
 import CTA from "./pages/CTA.jsx";
 
 // Auth
-import Register from "./pages/Register.jsx";  
+import Register from "./pages/Register.jsx";
 import LoginApp from "./pages/LoginApp.jsx";
 
 // Paneles / Rutas privadas
@@ -29,37 +29,53 @@ import MapPrincipal from "./pages/MapPrincipal.jsx";
 import MapSolicitudes from "./pages/MapSolicitudes.jsx";
 import Crud from "./pages/Crud.jsx";
 
+// Layout principal que gestiona Navbar y Footer según la ruta
 function Layout() {
   const location = useLocation();
 
+  // Rutas donde NO se debe mostrar Navbar/Footer
+  const hideNavbarFooterRoutes = [
+    "/login",
+    "/register",
+    "/admin",
+    "/ventana-admin",
+    "/crud",
+    "/conductor",
+    "/ventana-conductor",
+    "/ventana-ciudadano",
+    "/ciudadano",
+    "/map-solicitudes",
+    "/MapaPrincipal",
+    "/ventana-select-map"
+  ];
+
+  const showLayout = !hideNavbarFooterRoutes.includes(location.pathname);
+
   return (
     <>
-      {/* Navbar solo en Home */}
-      {location.pathname === "/index.html" && <Navbar />}
+      {showLayout && <Navbar />}
 
       <Routes>
-        {/* Página principal */}
+        {/* Landing Page */}
         <Route
           path="/"
           element={
             <>
               <Hero />
+              <HowItWorks />
+              <Benefits />
+              <AppPreview />
+              <Testimonials />
               <CTA />
             </>
           }
         />
 
-        {/* Secciones independientes */}
-        <Route path="/how-it-works" element={<HowItWorks />} />
-        <Route path="/benefits" element={<Benefits />} />
-        <Route path="/the-app" element={<AppPreview />} />
-        <Route path="/testimonials" element={<Testimonials />} />
-
         {/* Auth */}
-        <Route path="/register" element={<Register />} />  
-        <Route path="/login" element={<LoginApp />} />  
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<LoginApp />} />
 
-        {/* Paneles adicionales */}
+        {/* Paneles privados / administrativos */}
         <Route path="/MapaPrincipal" element={<MapPrincipal />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/ventana-admin" element={<VentanaAdmin />} />
@@ -72,11 +88,12 @@ function Layout() {
         <Route path="/crud" element={<Crud />} />
       </Routes>
 
-      <Footer />
+      {showLayout && <Footer />}
     </>
   );
 }
 
+// Componente principal
 function App() {
   return (
     <Router>
