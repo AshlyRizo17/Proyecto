@@ -1,46 +1,48 @@
+// ============================================
+// BACKEND - ZeroWaste Server
+// ============================================
 import express from "express";
-import mysql from "mysql2";
+import mysql from "mysql2/promise";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import cors from "cors";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const db = mysql.createConnection({
+// ============================================
+// CONFIGURACIÓN
+// ============================================
+const SECRET_KEY = "clave_super_secreta"; // 🔒 Cambia esto en producción
+
+const pool = mysql.createPool({
   host: "localhost",
-  user: "root", // tu usuario
-  password: "", // tu contraseña
-  database: "zerowaste"
+  user: "root",
+  password: "",
+  database: "zerowaste",
 });
 
-db.connect(err => {
-  if (err) {
-    console.error("❌ Error conectando a MySQL:", err);
-    return;
+// ============================================
+// MIDDLEWARE PARA VERIFICAR TOKEN
+// ============================================
+const verifyToken = (req, res, next) => {
+  const token = req.headers["authorization"]?.split(" ")[1];
+  if (!token) return res.status(403).json({ message: "Token requerido" });
+
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    res.status(401).json({ message: "Token inválido" });
   }
-  console.log("✅ Conectado a MySQL");
-});
+};
 
-// Ruta de login
-app.post("/login", (req, res) => {
-  const { email, password } = req.body;
-
-  db.query(
-  "SELECT * FROM usuarios WHERE email = ? AND contraseña = ?",
-  [email, password],
-  (err, result) => {
-    if (err) return res.status(500).json({ error: "Error en la consulta" });
-    if (result.length > 0) {
-      res.json({ success: true, user: result[0] });
-    } else {
-      res.json({ success: false, message: "Credenciales incorrectas" });
-    }
-  }
-);
-});
-
-// Ruta de registro
-app.post("/register", (req, res) => {
+// ============================================
+// RUTA: REGISTRO DE CIUDADANO
+// ============================================
+app.post("/register", async (req, res) => {
   const {
     firstName,
     lastName,
@@ -52,44 +54,128 @@ app.post("/register", (req, res) => {
     password,
   } = req.body;
 
-  // Insertar en la tabla usuarios
-  db.query(
-    "INSERT INTO usuarios (email, contraseña, rol) VALUES (?, ?, 'ciudadano')",
-    [registerEmail, password],
-    (err, result) => {
-      if (err) {
-        console.error("❌ Error insertando en usuarios:", err);
-        return res.status(500).json({ error: "Error al registrar usuario" });
-      }
+  try {
+    // Encriptar contraseña
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-      const userId = result.insertId;
+    // Crear usuario
+    const [result] = await pool.query(
+      "INSERT INTO usuarios (email, contraseña, rol) VALUES (?, ?, 'ciudadano')",
+      [registerEmail, hashedPassword]
+    );
 
-      // Insertar en la tabla ciudadanos
-      db.query(
-        "INSERT INTO ciudadanos (id_usuario, nombre, apellido, documento, localidad, email, contraseña) VALUES (?, ?, ?, ?, ?, ?, ?)",
-        [
-          userId,
-          firstName,
-          lastName,
-          documentNumber,
-          localidad,
-          registerEmail,
-          password,
-        ],
-        (err2) => {
-          if (err2) {
-            console.error("❌ Error insertando en ciudadanos:", err2);
-            return res.status(500).json({ error: "Error al registrar ciudadano" });
-          }
+    const userId = result.insertId;
 
-          res.json({ success: true, message: "✅ Registro exitoso" });
-        }
-      );
-    }
-  );
+    // Insertar en tabla ciudadanos
+    await pool.query(
+      "INSERT INTO ciudadanos (id_usuario, nombre, apellido, tipo_documento, documento, tipo_poblacion, localidad, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      [
+        userId,
+        firstName,
+        lastName,
+        documentType,
+        documentNumber,
+        populationType,
+        localidad,
+        registerEmail,
+      ]
+    );
+
+    res.json({ success: true, message: "✅ Registro exitoso" });
+  } catch (error) {
+    console.error("❌ Error en registro:", error);
+    res.status(500).json({ error: "Error al registrar usuario" });
+  }
 });
 
+// ============================================
+// RUTA: LOGIN
+// ============================================
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
 
-app.listen(3001, () => {
-  console.log("🚀 Servidor corriendo en http://localhost:3001");
+  try {
+    const [usuarios] = await pool.query(
+      "SELECT * FROM usuarios WHERE email = ?",
+      [email]
+    );
+
+    if (usuarios.length === 0)
+      return res.status(401).json({ message: "Usuario no encontrado" });
+
+    const usuario = usuarios[0];
+    const passwordValida = await bcrypt.compare(password, usuario.contraseña);
+
+    if (!passwordValida)
+      return res.status(401).json({ message: "Contraseña incorrecta" });
+
+    // Generar token
+    const token = jwt.sign(
+      { id_usuario: usuario.id_usuario, rol: usuario.rol, email: usuario.email },
+      SECRET_KEY,
+      { expiresIn: "24h" }
+    );
+
+    res.json({
+      success: true,
+      token,
+      rol: usuario.rol,
+      id_usuario: usuario.id_usuario,
+    });
+  } catch (error) {
+    console.error("❌ Error en login:", error);
+    res.status(500).json({ message: "Error al iniciar sesión" });
+  }
+});
+
+// ============================================
+// RUTA: PERFIL DEL USUARIO (por ID o token)
+// ============================================
+app.get("/api/usuarios/:id", verifyToken, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [result] = await pool.query(
+      "SELECT * FROM ciudadanos WHERE id_usuario = ?",
+      [id]
+    );
+
+    if (result.length === 0)
+      return res.status(404).json({ message: "Usuario no encontrado" });
+
+    res.json(result[0]);
+  } catch (error) {
+    console.error("❌ Error al obtener usuario:", error);
+    res.status(500).json({ message: "Error al obtener usuario" });
+  }
+});
+
+// ============================================
+// RUTA: PERFIL DESDE TOKEN
+// ============================================
+app.get("/api/perfil", verifyToken, async (req, res) => {
+  const { id_usuario, rol } = req.user;
+
+  try {
+    if (rol === "ciudadano") {
+      const [result] = await pool.query(
+        "SELECT * FROM ciudadanos WHERE id_usuario = ?",
+        [id_usuario]
+      );
+      res.json(result[0]);
+    } else {
+      res.json({ message: `Perfil del rol: ${rol}` });
+    }
+  } catch (error) {
+    console.error("❌ Error en perfil:", error);
+    res.status(500).json({ message: "Error al obtener perfil" });
+  }
+});
+
+// ============================================
+// INICIAR SERVIDOR
+// ============================================
+const PORT = 3001;
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor ZeroWaste corriendo en http://localhost:${PORT}`);
 });
