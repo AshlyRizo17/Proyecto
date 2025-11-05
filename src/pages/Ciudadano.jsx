@@ -4,7 +4,7 @@ import {
   LogOut, Home, FileText, Bell, MessageSquare, BookOpen,
   Map, Plus, CheckCircle, Clock, AlertCircle, Trash2
 } from 'lucide-react';
-import "../styles/ciudadano.css"
+import "../styles/conductor.css"
 
 const Ciudadano = () => {
   const [pestanaActiva, setPestanaActiva] = useState('perfil');

@@ -1,362 +1,365 @@
-import React from "react";
-import "../styles/admin.css"; // Importa tus estilos CSS
+import React, { useState } from 'react';
+import { 
+  User, Mail, Phone, MapPin, Calendar, Edit2, Save, X, 
+  LogOut, Home, FileText, Bell, MessageSquare, BookOpen,
+  Map, Plus, CheckCircle, Clock, AlertCircle, Trash2
+} from 'lucide-react';
+import "../styles/conductor.css"
 
-export default function Conductor() {
+const Conductor = () => {
+  const [pestanaActiva, setPestanaActiva] = useState('perfil');
+  const [editando, setEditando] = useState(false);
+
+  // Datos de ejemplo iniciales (usaremos 'usuario' como nuestra fuente de verdad)
+  const [usuario, setUsuario] = useState({
+    nombre: 'Juan',
+    apellido: 'Pérez',
+    email: 'juan.perez@example.com',
+    telefono: '+57 300 123 4567',
+    documento: '1234567890',
+    localidad: 'Bogotá',
+    rol: 'ciudadano',
+    fechaRegistro: '2024-01-15T10:30:00'
+  });
+
+  const [formData, setFormData] = useState(usuario);
+
+  // ... (otros datos de solicitudes y notificaciones omitidos por brevedad)
+
+  const iniciales = `${usuario.nombre?.[0] || ''}${usuario.apellido?.[0] || ''}`.toUpperCase();
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleEdit = () => {
+    setFormData(usuario); 
+    setEditando(true);
+  };
+
+  const handleSave = () => {
+    console.log('Guardando datos:', formData); 
+    setUsuario(formData); 
+    setEditando(false);
+  };
+
+  const handleCancel = () => {
+    setFormData(usuario); 
+    setEditando(false);
+  };
+
+              const renderContenido = () => {
+                switch (pestanaActiva) {
+                  case 'perfil':
+                    return (
+                      <div className="perfil-card">
+                        <div className="perfil-header-container">
+                          <div>
+                            <h2 className="titulo-seccion">Mi Perfil</h2>
+                            <p className="subtitulo-seccion">Información personal y estadísticas</p>
+                          </div>
+                          
+                          {!editando ? (
+                            <button
+                              onClick={handleEdit}
+                              className="btn btn-primary"
+                            >
+                              <Edit2 size={18} />
+                              Editar Perfil
+                            </button>
+                          ) : (
+                            <div className="perfil-acciones-container">
+                              <button
+                                onClick={handleSave}
+                                className="btn btn-save"
+                              >
+                                <Save size={18} />
+                                Guardar
+                              </button>
+                              <button
+                                onClick={handleCancel}
+                                className="btn btn-cancel"
+                              >
+                                <X size={18} />
+                                Cancelar
+                              </button>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="perfil-avatar-info">
+                          <div className="avatar">
+                            <span className="avatar-iniciales">{iniciales}</span>
+                          </div>
+                          <div>
+                            {editando ? (
+                              <div className="nombre-edicion">
+                                <input
+                                  type="text"
+                                  name="nombre"
+                                  value={formData.nombre}
+                                  onChange={handleChange}
+                                  className="input-editable input-nombre"
+                                />
+                                <input
+                                  type="text"
+                                  name="apellido"
+                                  value={formData.apellido}
+                                  onChange={handleChange}
+                                  className="input-editable input-nombre"
+                                />
+                              </div>
+                            ) : (
+                              <h3 className="perfil-nombre">
+                                {usuario.nombre} {usuario.apellido}
+                              </h3>
+                            )}
+                            <p className="perfil-rol">{usuario.rol}</p>
+                          </div>
+                        </div>
+
+                        <div className="perfil-datos-grid">
+                          
+                          {/* Correo Electrónico */}
+                          <div className="campo-container">
+                            <label className="campo-label">
+                              <Mail size={16} className="icon-campo" />
+                              Correo Electrónico
+                            </label>
+                            {editando ? (
+                              <input
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                className="input-editable input-campo"
+                              />
+                            ) : (
+                              <p className="campo-valor campo-valor-normal">
+                                {usuario.email}
+                              </p>
+                            )}
+                          </div>
+
+                          {/* Teléfono */}
+                          <div className="campo-container">
+                            <label className="campo-label">
+                              <Phone size={16} className="icon-campo" />
+                              Teléfono
+                            </label>
+                            {editando ? (
+                              <input
+                                type="tel"
+                                name="telefono"
+                                value={formData.telefono}
+                                onChange={handleChange}
+                                className="input-editable input-campo"
+                              />
+                            ) : (
+                              <p className="campo-valor campo-valor-normal">
+                                {usuario.telefono}
+                              </p>
+                            )}
+                          </div>
+
+                          {/* Documento (No Editable) */}
+                          <div className="campo-container">
+                            <label className="campo-label">
+                              <User size={16} className="icon-campo" />
+                              Documento
+                            </label>
+                            <p className="campo-valor campo-valor-noeditable">
+                              {usuario.documento} (No editable)
+                            </p>
+                          </div>
+
+                          {/* Localidad */}
+                          <div className="campo-container">
+                            <label className="campo-label">
+                              <MapPin size={16} className="icon-campo" />
+                              Localidad
+                            </label>
+                            {editando ? (
+                              <input
+                                type="text"
+                                name="localidad"
+                                value={formData.localidad}
+                                onChange={handleChange}
+                                className="input-editable input-campo"
+                              />
+                            ) : (
+                              <p className="campo-valor campo-valor-normal">
+                                {usuario.localidad}
+                              </p>
+                            )}
+                          </div>
+
+                          {/* Miembro desde (No Editable) */}
+                          <div className="campo-container campo-full-width">
+                            <label className="campo-label">
+                              <Calendar size={16} className="icon-campo" />
+                              Miembro desde
+                            </label>
+                            <p className="campo-valor campo-valor-noeditable">
+                              15 de enero de 2024
+                            </p>
+                          </div>
+                        </div>
+
+            {/* Estadísticas */}
+            <div className="perfil-stats-grid">
+              <div className="stat-card stat-blue">
+                <FileText className="stat-icon" size={32} />
+                <p className="stat-number">3</p>
+                <p className="stat-label">Solicitudes Activas</p>
+              </div>
+              <div className="stat-card stat-green">
+                <CheckCircle className="stat-icon" size={32} />
+                <p className="stat-number">12</p>
+                <p className="stat-label">Completadas</p>
+              </div>
+              <div className="stat-card stat-yellow">
+                <Bell className="stat-icon" size={32} />
+                <p className="stat-number">2</p>
+                <p className="stat-label">Notificaciones</p>
+              </div>
+              <div className="stat-card stat-purple">
+                <Trash2 className="stat-icon" size={32} />
+                <p className="stat-number">95%</p>
+                <p className="stat-label">Separación</p>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'solicitudes':
+        // ... (Contenido de Solicitudes)
+        return <div className="contenido-generico">Contenido de Solicitudes</div>;
+      case 'notificaciones':
+        // ... (Contenido de Notificaciones)
+        return <div className="contenido-generico">Contenido de Notificaciones</div>;
+      case 'rutas':
+        // ... (Contenido de Rutas)
+        return <div className="contenido-generico">Contenido de Rutas Ecológicas</div>;
+      case 'recursos':
+        // ... (Contenido de Recursos)
+        return <div className="contenido-generico">Contenido de Recursos</div>;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <>
-      {/* Header */}
-      <header>
-        <div className="container">
-          <nav className="navbar">
+    <div className="app-container">
+      <div className="app-layout">
+        {/* Sidebar */}
+        <aside className="sidebar">
+          <div className="sidebar-content">
             {/* Logo */}
-            <a href="./index.html" className="logo">
-              <img src="../img/logo.png" alt="Logo" className="logo" />
-            </a>
-
-            {/* Botón hamburguesa */}
-            <button
-              className="mobile-menu-btn"
-              aria-label="Abrir menú de navegación"
-              aria-expanded="false"
-              aria-controls="navigation-menu"
-              type="button"
-              id="hamburger"
-            >
-              <div className="hamburger-line"></div>
-              <div className="hamburger-line"></div>
-              <div className="hamburger-line"></div>
-            </button>
+            <div className="logo-container">
+              <div className="logo-icon">
+  <img 
+    src="../src/assets/img/logo.png" 
+    alt="Logo Zero Waste" 
+    className="logo-img
+" 
+  />
+</div>
+              <div>
+                <h2 className="logo-titulo">Zero Waste</h2>
+                <p className="logo-subtitulo">Portal Ciudadano</p>
+              </div>
+            </div>
 
             {/* Menú */}
-            <ul className="nav-links" id="navigation-menu" role="menu">
-              <li><a href="#inicio" className="active">Inicio</a></li>
-              <li><a href="#como-funciona">Cómo Funciona</a></li>
-              <li><a href="#beneficios">Beneficios</a></li>
-              <li><a href="#app">La App</a></li>
-              <li><a href="#testimonios">Testimonios</a></li>
-              <li><a href="#contacto">Contacto</a></li>
-              <li><a href="/ventana-conductor" className="auth-link">CONDUCTOR</a></li>
-            </ul>
-          </nav>
-        </div>
-      </header>
+            <nav className="nav-menu">
+              {/* Elementos del menú ... */}
+              <button
+                onClick={() => setPestanaActiva('perfil')}
+                className={`nav-link ${pestanaActiva === 'perfil' ? 'active' : ''}`}
+              >
+                <Home size={20} />
+                Mi Perfil
+              </button>
+              {/* ... (Otros enlaces de navegación) */}
+              <button
+                onClick={() => setPestanaActiva('solicitudes')}
+                className={`nav-link ${pestanaActiva === 'solicitudes' ? 'active' : ''}`}
+              >
+                <FileText size={20} />
+                Solicitudes
+              </button>
+              <button
+                onClick={() => setPestanaActiva('notificaciones')}
+                className={`nav-link ${pestanaActiva === 'notificaciones' ? 'active' : ''}`}
+              >
+                <Bell size={20} />
+                <span>Notificaciones</span>
+                <span className="badge-notificaciones">2</span>
+              </button>
+              <button
+                onClick={() => setPestanaActiva('rutas')}
+                className={`nav-link ${pestanaActiva === 'rutas' ? 'active' : ''}`}
+              >
+                <Map size={20} />
+                Rutas Ecológicas
+              </button>
+              <button
+                onClick={() => setPestanaActiva('recursos')}
+                className={`nav-link ${pestanaActiva === 'recursos' ? 'active' : ''}`}
+              >
+                <BookOpen size={20} />
+                Recursos
+              </button>
+            </nav>
 
-      {/* Hero Section */}
-      <section id="inicio" className="hero">
-        <div className="container">
-          <div className="hero-content">
-            <h1>Transformando Bogotá, un residuo a la vez</h1>
-            <p>
-              Un proyecto innovador para gestionar residuos en sectores
-              vulnerables, usando tecnología y comunidad para crear una ciudad más
-              limpia y sostenible.
-            </p>
-            <div className="hero-btns">
-              <a href="#app" className="btn">Descargar la App</a>
-              <a href="#como-funciona" className="btn btn-outline">Ver cómo funciona</a>
-            </div>
-
-            <div className="stats">
-              <div className="stat-item">
-                <div className="stat-icon"><i className="fas fa-users"></i></div>
-                <div className="stat-text">
-                  <div className="stat-number">25,000+</div>
-                  <div>Ciudadanos beneficiados</div>
-                </div>
-              </div>
-
-              <div className="stat-item">
-                <div className="stat-icon"><i className="fas fa-trash-alt"></i></div>
-                <div className="stat-text">
-                  <div className="stat-number">70%</div>
-                  <div>Menos residuos en calles</div>
-                </div>
-              </div>
-
-              <div className="stat-item">
-                <div className="stat-icon"><i className="fas fa-tree"></i></div>
-                <div className="stat-text">
-                  <div className="stat-number">45%</div>
-                  <div>Más material reciclado</div>
-                </div>
-              </div>
-            </div>
+            {/* Botón cerrar sesión */}
+           <button
+  className="btn btn-logout"
+  onClick={() => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("usuario");
+    window.location.href = "/login"; // 🔁 Redirige al login
+  }}
+>
+  <LogOut size={20} />
+  Cerrar Sesión
+</button>
           </div>
-        </div>
-      </section>
+        </aside>
 
-      {/* Cómo funciona */}
-      <section id="como-funciona" className="how-it-works">
-        <div className="container">
-          <div className="section-title">
-            <h2>¿Cómo funciona Zero Waste?</h2>
-            <p>
-              Un sistema integrado que combina infraestructura, tecnología y
-              comunidad para transformar la gestión de residuos
-            </p>
+        {/* Contenido principal */}
+        <main className="main-content">
+          {/* Header */}
+          <div className="main-header">
+            <h1 className="main-title">
+              ¡Hola, {usuario.nombre}! 👋
+            </h1>
+            <p className="main-subtitle">Bienvenido a tu panel de ciudadano activo</p>
           </div>
 
-          <div className="steps">
-            <div className="step">
-              <div className="step-number">01</div>
-              <div className="step-icon"><i className="fas fa-trash-alt"></i></div>
-              <h3>Puntos Ecológicos</h3>
-              <p>Instalación de contenedores especializados...</p>
-            </div>
+          {/* Contenido dinámico */}
+          {renderContenido()}
 
-            <div className="step">
-              <div className="step-number">02</div>
-              <div className="step-icon"><i className="fas fa-map-marked-alt"></i></div>
-              <h3>Mapa Interactivo</h3>
-              <p>Visualización en tiempo real...</p>
-            </div>
-
-            <div className="step">
-              <div className="step-number">03</div>
-              <div className="step-icon"><i className="fas fa-bell"></i></div>
-              <h3>Alertas Inteligentes</h3>
-              <p>Notificaciones personalizadas...</p>
-            </div>
-
-            <div className="step">
-              <div className="step-number">04</div>
-              <div className="step-icon"><i className="fas fa-mobile-alt"></i></div>
-              <h3>App Zero Waste</h3>
-              <p>Aplicación móvil para gestionar...</p>
-            </div>
-
-            <div className="step">
-              <div className="step-number">05</div>
-              <div className="step-icon"><i className="fas fa-graduation-cap"></i></div>
-              <h3>Educación Ambiental</h3>
-              <p>Programas comunitarios y guías...</p>
-            </div>
-
-            <div className="step">
-              <div className="step-number">06</div>
-              <div className="step-icon"><i className="fas fa-chart-line"></i></div>
-              <h3>Monitoreo y Reportes</h3>
-              <p>Sistema de seguimiento con métricas...</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Beneficios */}
-      <section id="beneficios" className="benefits">
-        <div className="container">
-          <div className="section-title">
-            <h2>Beneficios Transformadores</h2>
-            <p>Impacto positivo en comunidades y medio ambiente...</p>
-          </div>
-
-          <div className="benefits-grid">
-            <div className="benefit-card">
-              <i className="fas fa-leaf"></i>
-              <h3>Reducción de Contaminación</h3>
-              <p>Disminución significativa...</p>
-            </div>
-
-            <div className="benefit-card">
-              <i className="fas fa-users"></i>
-              <h3>Inclusión Comunitaria</h3>
-              <p>Participación activa de ciudadanos...</p>
-            </div>
-
-            <div className="benefit-card">
-              <i className="fas fa-chart-pie"></i>
-              <h3>Eficiencia Operativa</h3>
-              <p>Optimización de rutas con IA...</p>
-            </div>
-
-            <div className="benefit-card">
-              <i className="fas fa-seedling"></i>
-              <h3>Cultura Ambiental</h3>
-              <p>Promoción de hábitos sostenibles...</p>
-            </div>
-
-            <div className="benefit-card">
-              <i className="fas fa-wallet"></i>
-              <h3>Ahorro Económico</h3>
-              <p>Reducción de costos de limpieza pública...</p>
-            </div>
-
-            <div className="benefit-card">
-              <i className="fas fa-shield-alt"></i>
-              <h3>Seguridad Sanitaria</h3>
-              <p>Menor proliferación de enfermedades...</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* App */}
-      <section id="app" className="app-preview">
-        <div className="container">
-          <div className="app-container">
-            <div className="app-image">
-              <img src="./assets/img/logo.png" alt="Zero Waste App" width="300" height="400" />
-            </div>
-            <div className="app-content">
-              <h2>La App Zero Waste</h2>
-              <p>Tu compañera para construir una Bogotá más limpia...</p>
-
-              <div className="app-features">
-                <div className="feature">
-                  <i className="fas fa-map-marker-alt"></i>
-                  <div className="feature-content">
-                    <h4>Mapa Interactivo</h4>
-                    <p>Visualiza rutas en tiempo real...</p>
-                  </div>
-                </div>
-                <div className="feature">
-                  <i className="fas fa-bell"></i>
-                  <div className="feature-content">
-                    <h4>Alertas Personalizadas</h4>
-                    <p>Recibe notificaciones...</p>
-                  </div>
-                </div>
-                <div className="feature">
-                  <i className="fas fa-book"></i>
-                  <div className="feature-content">
-                    <h4>Guías Educativas</h4>
-                    <p>Aprende a separar residuos...</p>
-                  </div>
-                </div>
-                <div className="feature">
-                  <i className="fas fa-calendar-check"></i>
-                  <div className="feature-content">
-                    <h4>Solicitud de Recolección</h4>
-                    <p>Solicita recolección especial...</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="app-stores">
-                <a href="https://play.google.com/store/" className="app-btn">
-                  <i className="fab fa-google-play"></i>
-                  <div className="app-btn-text">
-                    <span>Descarga en</span>
-                    <span>Google Play</span>
-                  </div>
-                </a>
-                <a href="https://www.apple.com/co/app-store/" className="app-btn">
-                  <i className="fab fa-apple"></i>
-                  <div className="app-btn-text">
-                    <span>Disponible en</span>
-                    <span>App Store</span>
-                  </div>
-                </a>
+          {/* Información adicional */}
+          <div className="alerta-info">
+            <div className="alerta-content">
+              <AlertCircle className="alerta-icon" size={24} />
+              <div>
+                <h3 className="alerta-titulo">Mantén tu información actualizada</h3>
+                <p className="alerta-texto">
+                  Es importante que tu información de contacto esté siempre actualizada para recibir notificaciones importantes sobre tus solicitudes.
+                </p>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Testimonios */}
-      <section id="testimonios" className="testimonials">
-        <div className="container">
-          <div className="section-title">
-            <h2>Lo que dicen nuestras comunidades</h2>
-            <p>Historias reales de transformación...</p>
-          </div>
-
-          <div className="testimonials-container">
-            <div className="testimonial">
-              <div className="testimonial-text">
-                "Gracias a Zero Waste, nuestro barrio ha cambiado..."
-              </div>
-              <div className="testimonial-author">
-                <div className="author-avatar"><img src="" alt="María Rodríguez" /></div>
-                <div className="author-info">
-                  <h4>María Rodríguez</h4>
-                  <p>Líder comunitaria, Ciudad Bolívar</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="testimonial">
-              <div className="testimonial-text">
-                "Como recicladora, este proyecto me ha dado un trabajo formal..."
-              </div>
-              <div className="testimonial-author">
-                <div className="author-avatar"><img src="" alt="Lina Cortes" /></div>
-                <div className="author-info">
-                  <h4>Lina Cortes</h4>
-                  <p>Recicladora formalizada, Bonanza</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="cta">
-        <div className="container">
-          <h2>¡Únete a la Revolución Zero Waste!</h2>
-          <p>Descarga nuestra app, participa o conviértete en aliado...</p>
-          <div className="cta-btns">
-            <a href="#" className="btn btn-accent">Descargar la App</a>
-            <a href="#" className="btn btn-outline">Ser Aliado</a>
-            <a href="#" className="btn btn-outline">Donar al Proyecto</a>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer id="contacto">
-        <div className="container">
-          <div className="footer-content">
-            <div className="footer-section footer-about">
-              <h3>Zero Waste</h3>
-              <p>Transformando la gestión de residuos en sectores vulnerables...</p>
-              <div className="social-links">
-                <a href="https://wa.me/qr/F56TCJUQH4GHM1"><i className="fab fa-whatsapp"></i></a>
-                <a href="https://www.facebook.com/?locale=es_LA"><i className="fab fa-facebook-f"></i></a>
-                <a href="https://www.instagram.com/"><i className="fab fa-instagram"></i></a>
-              </div>
-            </div>
-
-            <div className="footer-section">
-              <h3>Enlaces Rápidos</h3>
-              <ul className="footer-links">
-                <li><a href="#inicio"><i className="fas fa-chevron-right"></i> Inicio</a></li>
-                <li><a href="#como-funciona"><i className="fas fa-chevron-right"></i> Cómo Funciona</a></li>
-                <li><a href="#beneficios"><i className="fas fa-chevron-right"></i> Beneficios</a></li>
-                <li><a href="#app"><i className="fas fa-chevron-right"></i> La App</a></li>
-                <li><a href="#testimonios"><i className="fas fa-chevron-right"></i> Testimonios</a></li>
-              </ul>
-            </div>
-
-            <div className="footer-section">
-              <h3>Recursos</h3>
-              <ul className="footer-links">
-                <li><a href="#"><i className="fas fa-file-pdf"></i> Guía de Separación</a></li>
-                <li><a href="#"><i className="fas fa-map-marked-alt"></i> Mapa de Contenedores</a></li>
-                <li><a href="#"><i className="fas fa-video"></i> Tutoriales</a></li>
-                <li><a href="#"><i className="fas fa-book"></i> Informes de Impacto</a></li>
-                <li><a href="#"><i className="fas fa-newspaper"></i> Prensa</a></li>
-              </ul>
-            </div>
-
-            <div className="footer-section">
-              <h3>Contacto</h3>
-              <ul className="footer-links">
-                <li><a href="#"><i className="fas fa-envelope"></i> infozerowaste@gmail.com</a></li>
-                <li><a href="#"><i className="fas fa-phone"></i> +57 3248477104</a></li>
-                <li><a href="#"><i className="fas fa-map-marker-alt"></i> Carrera 15 # 88-64, Bogotá</a></li>
-                <li><a href="#"><i className="fas fa-headset"></i> Soporte Técnico</a></li>
-                <li><a href="#"><i className="fas fa-hands-helping"></i> Voluntariado</a></li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="footer-bottom">
-            <p>&copy; 2025 Zero Waste. Todos los derechos reservados</p>
-          </div>
-        </div>
-      </footer>
-    </>
+        </main>
+      </div>
+    </div>
   );
-}
+};
+
+export default Conductor;

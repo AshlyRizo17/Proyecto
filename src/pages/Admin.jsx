@@ -1,336 +1,500 @@
-import React, { useState } from "react";
-import "../styles/admin.css"; // tu CSS
-import logo from "../assets/img/logo.png"; // logo
+import React, { useState } from 'react';
+import { 
+  User, Mail, Phone, MapPin, Calendar, Edit2, Save, X, 
+  LogOut, Home, FileText, Bell, MessageSquare, BookOpen,
+  Map, Plus, CheckCircle, Clock, AlertCircle, Trash2, 
+  Users, Building, Truck, Edit, List
+} from 'lucide-react';
+// Asegúrate de cambiar o adaptar el CSS:
+// import "../styles/ciudadano.css" 
+// A:
+import "../styles/Admin.css" // <-- Asegúrate de tener este archivo o ajusta la ruta
 
+// 1. Renombrar el componente a Admin
 const Admin = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
+  // 2. Ajustar las pestañas a las vistas del administrador
+  const [pestanaActiva, setPestanaActiva] = useState('perfil');
+  const [editando, setEditando] = useState(false);
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
+  // 3. Datos de ejemplo para el Administrador
+  const [administrador, setAdministrador] = useState({
+    nombre: 'Danna',
+    apellido: 'Zarta',
+    email: 'danna.admin@zerowaste.com',
+    telefono: '+57 320 987 6543',
+    documento: 'ADM12345',
+    localidad: 'Bogotá (Sede Principal)',
+    rol: 'Administrador Principal',
+    fechaRegistro: '2023-08-01T09:00:00'
+  });
+
+  const [formData, setFormData] = useState(administrador);
+  const iniciales = `${administrador.nombre?.[0] || ''}${administrador.apellido?.[0] || ''}`.toUpperCase();
+
+  // Datos simulados para las otras vistas (Gestión)
+  const [usuarios, setUsuarios] = useState([
+    { id: 'U001', nombre: 'Ana Gómez', correo: 'ana.gomez@example.com', estado: 'Activo' },
+    { id: 'U002', nombre: 'Carlos Ruiz', correo: 'carlos.ruiz@example.com', estado: 'Inactivo' },
+  ]);
+
+  const [empresas, setEmpresas] = useState([
+    { id: 'E001', nombre: 'EcoVerde S.A.', ciudad: 'Bogotá', tipo: 'Reciclaje', estado: 'Aprobada' },
+    { id: 'E002', nombre: 'Planeta Limpio', ciudad: 'Medellín', tipo: 'Transporte', estado: 'Pendiente' },
+  ]);
+
+  const [vehiculos, setVehiculos] = useState([
+    { id: 'V001', placa: 'ABC-123', conductor: 'Juan Pérez', estado: 'Activo' },
+    { id: 'V002', placa: 'XYZ-789', conductor: 'María López', estado: 'Mantenimiento' },
+  ]);
+    // Función de ejemplo para manejar la edición en las tablas
+    const handleEditItem = (tipo, id) => {
+        alert(`Editando ${tipo} con ID: ${id}`);
+        // Aquí implementarías la lógica de edición real
+    };
+
+    const handleDeleteItem = (tipo, id) => {
+        if (window.confirm(`¿Estás seguro de eliminar el item ${id} de ${tipo}?`)) {
+            if (tipo === 'usuarios') setUsuarios(prev => prev.filter(u => u.id !== id));
+            if (tipo === 'empresas') setEmpresas(prev => prev.filter(e => e.id !== id));
+            if (tipo === 'vehiculos') setVehiculos(prev => prev.filter(v => v.id !== id));
+        }
+    };
+
+
+  // Funciones de gestión de perfil (sin cambios, solo usan 'administrador' en lugar de 'usuario')
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleEdit = () => {
+    setFormData(administrador); 
+    setEditando(true);
+  };
+
+  const handleSave = () => {
+    console.log('Guardando datos de administrador:', formData); 
+    setAdministrador(formData); 
+    setEditando(false);
+  };
+
+  const handleCancel = () => {
+    setFormData(administrador); 
+    setEditando(false);
+  };
+
+  // 3. Adaptar el renderContenido al Admin
+  const renderContenido = () => {
+    switch (pestanaActiva) {
+      case 'perfil':
+        // **PERFIL DEL ADMINISTRADOR**
+        return (
+          <div className="perfil-card">
+            <div className="perfil-header-container">
+              <div>
+                <h2 className="titulo-seccion">Mi Perfil de Administrador</h2>
+                <p className="subtitulo-seccion">Gestión de datos de cuenta</p>
+              </div>
+              
+              {!editando ? (
+                <button
+                  onClick={handleEdit}
+                  className="btn btn-primary"
+                >
+                  <Edit2 size={18} />
+                  Editar Perfil
+                </button>
+              ) : (
+                <div className="perfil-acciones-container">
+                  <button
+                    onClick={handleSave}
+                    className="btn btn-save"
+                  >
+                    <Save size={18} />
+                    Guardar
+                  </button>
+                  <button
+                    onClick={handleCancel}
+                    className="btn btn-cancel"
+                  >
+                    <X size={18} />
+                    Cancelar
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div className="perfil-avatar-info">
+              <div className="avatar">
+                <span className="avatar-iniciales">{iniciales}</span>
+              </div>
+              <div>
+                {editando ? (
+                  <div className="nombre-edicion">
+                    <input
+                      type="text"
+                      name="nombre"
+                      value={formData.nombre}
+                      onChange={handleChange}
+                      className="input-editable input-nombre"
+                    />
+                    <input
+                      type="text"
+                      name="apellido"
+                      value={formData.apellido}
+                      onChange={handleChange}
+                      className="input-editable input-nombre"
+                    />
+                  </div>
+                ) : (
+                  <h3 className="perfil-nombre">
+                    {administrador.nombre} {administrador.apellido}
+                  </h3>
+                )}
+                <p className="perfil-rol">{administrador.rol}</p>
+              </div>
+            </div>
+
+            <div className="perfil-datos-grid">
+              
+              {/* Correo Electrónico */}
+              <div className="campo-container">
+                <label className="campo-label">
+                  <Mail size={16} className="icon-campo" />
+                  Correo Electrónico
+                </label>
+                {editando ? (
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="input-editable input-campo"
+                  />
+                ) : (
+                  <p className="campo-valor campo-valor-normal">
+                    {administrador.email}
+                  </p>
+                )}
+              </div>
+
+              {/* Teléfono */}
+              <div className="campo-container">
+                <label className="campo-label">
+                  <Phone size={16} className="icon-campo" />
+                  Teléfono
+                </label>
+                {editando ? (
+                  <input
+                    type="tel"
+                    name="telefono"
+                    value={formData.telefono}
+                    onChange={handleChange}
+                    className="input-editable input-campo"
+                  />
+                ) : (
+                  <p className="campo-valor campo-valor-normal">
+                    {administrador.telefono}
+                  </p>
+                )}
+              </div>
+
+              {/* Documento (No Editable) */}
+              <div className="campo-container">
+                <label className="campo-label">
+                  <User size={16} className="icon-campo" />
+                  ID de Administrador
+                </label>
+                <p className="campo-valor campo-valor-noeditable">
+                  {administrador.documento} (No editable)
+                </p>
+              </div>
+
+              {/* Localidad */}
+              <div className="campo-container">
+                <label className="campo-label">
+                  <MapPin size={16} className="icon-campo" />
+                  Ubicación
+                </label>
+                {editando ? (
+                  <input
+                    type="text"
+                    name="localidad"
+                    value={formData.localidad}
+                    onChange={handleChange}
+                    className="input-editable input-campo"
+                  />
+                ) : (
+                  <p className="campo-valor campo-valor-normal">
+                    {administrador.localidad}
+                  </p>
+                )}
+              </div>
+
+              {/* Miembro desde (No Editable) */}
+              <div className="campo-container campo-full-width">
+                <label className="campo-label">
+                  <Calendar size={16} className="icon-campo" />
+                  Miembro desde
+                </label>
+                <p className="campo-valor campo-valor-noeditable">
+                  01 de agosto de 2023
+                </p>
+              </div>
+            </div>
+
+            {/* Estadísticas de Administrador */}
+            <div className="perfil-stats-grid">
+              <div className="stat-card stat-blue">
+                <Users className="stat-icon" size={32} />
+                <p className="stat-number">250</p>
+                <p className="stat-label">Usuarios Registrados</p>
+              </div>
+              <div className="stat-card stat-green">
+                <Building className="stat-icon" size={32} />
+                <p className="stat-number">12</p>
+                <p className="stat-label">Empresas Activas</p>
+              </div>
+              <div className="stat-card stat-yellow">
+                <List className="stat-icon" size={32} />
+                <p className="stat-number">5</p>
+                <p className="stat-label">Solicitudes Pendientes</p>
+              </div>
+              <div className="stat-card stat-purple">
+                <Truck className="stat-icon" size={32} />
+                <p className="stat-number">8</p>
+                <p className="stat-label">Vehículos en Ruta</p>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'usuarios':
+        // **GESTIÓN DE USUARIOS**
+        return (
+          <div className="gestion-card">
+            <h2 className="titulo-seccion">👥 Gestión de Usuarios</h2>
+            <p className="subtitulo-seccion">Administra cuentas de ciudadanos y sus estados.</p>
+            <button className="btn btn-add"><Plus size={18} /> Nuevo Usuario</button>
+            <table className="requests-table">
+              <thead>
+                <tr>
+                  <th>ID</th><th>Nombre</th><th>Correo</th><th>Estado</th><th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {usuarios.map(u => (
+                  <tr key={u.id}>
+                    <td>{u.id}</td>
+                    <td>{u.nombre}</td>
+                    <td>{u.correo}</td>
+                    <td className={u.estado === 'Activo' ? 'status-active' : 'status-inactive'}>{u.estado}</td>
+                    <td>
+                      <button onClick={() => handleEditItem('usuarios', u.id)} className="btn-icon"><Edit size={16} /></button>
+                      <button onClick={() => handleDeleteItem('usuarios', u.id)} className="btn-icon btn-danger"><Trash2 size={16} /></button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+
+      case 'empresas':
+        // **GESTIÓN DE EMPRESAS**
+        return (
+          <div className="gestion-card">
+            <h2 className="titulo-seccion">🏢 Gestión de Empresas</h2>
+            <p className="subtitulo-seccion">Revisa y gestiona las empresas registradas para el servicio.</p>
+            <button className="btn btn-add"><Plus size={18} /> Nueva Empresa</button>
+            <table className="requests-table">
+              <thead>
+                <tr>
+                  <th>ID</th><th>Nombre</th><th>Ciudad</th><th>Tipo</th><th>Estado</th><th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {empresas.map(e => (
+                  <tr key={e.id}>
+                    <td>{e.id}</td>
+                    <td>{e.nombre}</td>
+                    <td>{e.ciudad}</td>
+                    <td>{e.tipo}</td>
+                    <td className={e.estado === 'Aprobada' ? 'status-active' : 'status-pending'}>{e.estado}</td>
+                    <td>
+                      <button onClick={() => handleEditItem('empresas', e.id)} className="btn-icon"><Edit size={16} /></button>
+                      <button onClick={() => handleDeleteItem('empresas', e.id)} className="btn-icon btn-danger"><Trash2 size={16} /></button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+
+      case 'vehiculos':
+        // **GESTIÓN DE VEHÍCULOS**
+        return (
+          <div className="gestion-card">
+            <h2 className="titulo-seccion">🚛 Gestión de Vehículos</h2>
+            <p className="subtitulo-seccion">Controla la flota de recolección y su estado.</p>
+            <button className="btn btn-add"><Plus size={18} /> Nuevo Vehículo</button>
+            <table className="requests-table">
+              <thead>
+                <tr>
+                  <th>ID</th><th>Placa</th><th>Conductor</th><th>Estado</th><th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {vehiculos.map(v => (
+                  <tr key={v.id}>
+                    <td>{v.id}</td>
+                    <td>{v.placa}</td>
+                    <td>{v.conductor}</td>
+                    <td className={v.estado === 'Activo' ? 'status-active' : 'status-maintenance'}>{v.estado}</td>
+                    <td>
+                      <button onClick={() => handleEditItem('vehiculos', v.id)} className="btn-icon"><Edit size={16} /></button>
+                      <button onClick={() => handleDeleteItem('vehiculos', v.id)} className="btn-icon btn-danger"><Trash2 size={16} /></button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+
+      case 'solicitudes':
+        // **SOLICITUDES PENDIENTES (Ejemplo)**
+        return (
+          <div className="gestion-card">
+            <h2 className="titulo-seccion">📝 Solicitudes Pendientes</h2>
+            <p className="subtitulo-seccion">Revisa y aprueba nuevas solicitudes de servicio o registro.</p>
+            <div className="alerta-info">
+                <div className="alerta-content">
+                    <Clock className="alerta-icon" size={24} />
+                    <div>
+                        <h3 className="alerta-titulo">Tienes 5 Solicitudes de Registro de Empresa por revisar.</h3>
+                        <p className="alerta-texto">
+                           Prioriza las solicitudes más antiguas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
   };
 
   return (
-    <>
-      {/* Header */}
-      <header>
-        <div className="container">
-          <nav className="navbar">
+    <div className="app-container">
+      <div className="app-layout">
+        {/* Sidebar */}
+        <aside className="sidebar">
+          <div className="sidebar-content">
             {/* Logo */}
-            <a href="./index.html" className="logo">
-              <img src={logo} alt="Logo" className="logo" />
-            </a>
+            <div className="logo-container">
+              <div className="logo-icon">
+                <img 
+    src="../src/assets/img/logo.png" 
+    alt="Logo Zero Waste" 
+    className="logo-img
+" 
+  />
+              </div>
+              <div>
+                <h2 className="logo-titulo">Zero Waste</h2>
+                <p className="logo-subtitulo">Panel **Administrador**</p>
+              </div>
+            </div>
 
-            {/* Botón hamburguesa */}
-            <button
-              className="mobile-menu-btn"
-              aria-label="Abrir menú de navegación"
-              aria-expanded={menuOpen}
-              aria-controls="navigation-menu"
-              type="button"
-              id="hamburger"
-              onClick={toggleMenu}
+            {/* Menú - Adaptado a Admin */}
+            <nav className="nav-menu">
+              <button
+                onClick={() => setPestanaActiva('perfil')}
+                className={`nav-link ${pestanaActiva === 'perfil' ? 'active' : ''}`}
+              >
+                <Home size={20} />
+                Mi Perfil
+              </button>
+              <button
+                onClick={() => setPestanaActiva('usuarios')}
+                className={`nav-link ${pestanaActiva === 'usuarios' ? 'active' : ''}`}
+              >
+                <Users size={20} />
+                Gestión de Usuarios
+              </button>
+              <button
+                onClick={() => setPestanaActiva('empresas')}
+                className={`nav-link ${pestanaActiva === 'empresas' ? 'active' : ''}`}
+              >
+                <Building size={20} />
+                Gestión de Empresas
+              </button>
+              <button
+                onClick={() => setPestanaActiva('vehiculos')}
+                className={`nav-link ${pestanaActiva === 'vehiculos' ? 'active' : ''}`}
+              >
+                <Truck size={20} />
+                Gestión de Vehículos
+              </button>
+              <button
+                onClick={() => setPestanaActiva('solicitudes')}
+                className={`nav-link ${pestanaActiva === 'solicitudes' ? 'active' : ''}`}
+              >
+                <FileText size={20} />
+                Solicitudes Pendientes
+                <span className="badge-notificaciones">5</span>
+              </button>
+            </nav>
+
+            {/* Botón cerrar sesión */}
+           <button
+              className="btn btn-logout"
+              onClick={() => {
+                // Simulación de cierre de sesión
+                console.log("Cerrando sesión del administrador.");
+                // window.location.href = "/login"; 
+              }}
             >
-              <div className="hamburger-line"></div>
-              <div className="hamburger-line"></div>
-              <div className="hamburger-line"></div>
+              <LogOut size={20} />
+              Cerrar Sesión
             </button>
+          </div>
+        </aside>
 
-            {/* Enlaces */}
-            <ul
-              className={`nav-links ${menuOpen ? "active" : ""}`}
-              id="navigation-menu"
-              role="menu"
-            >
-              <li><a href="#inicio" className="active">Inicio</a></li>
-              <li><a href="#como-funciona">Cómo Funciona</a></li>
-              <li><a href="#beneficios">Beneficios</a></li>
-              <li><a href="#app">La App</a></li>
-              <li><a href="#testimonios">Testimonios</a></li>
-              <li><a href="#contacto">Contacto</a></li>
-              <li><a href="/ventana-admin" className="auth-link">ADMIN</a></li>
-            </ul>
-          </nav>
-        </div>
-      </header>
+        {/* Contenido principal */}
+        <main className="main-content">
+          {/* Header */}
+          <div className="main-header">
+            <h1 className="main-title">
+              ¡Bienvenido, {administrador.nombre}! 👑
+            </h1>
+            <p className="main-subtitle">Panel de control de la plataforma Zero Waste</p>
+          </div>
 
-      {/* Hero */}
-      <section id="inicio" className="hero">
-        <div className="container">
-          <div className="hero-content">
-            <h1>Transformando Bogotá, un residuo a la vez</h1>
-            <p>
-              Un proyecto innovador para gestionar residuos en sectores vulnerables,
-              usando tecnología y comunidad para crear una ciudad más limpia y sostenible.
-            </p>
-            <div className="hero-btns">
-              <a href="#app" className="btn">Descargar la App</a>
-              <a href="#como-funciona" className="btn btn-outline">Ver cómo funciona</a>
-            </div>
+          {/* Contenido dinámico */}
+          {renderContenido()}
 
-            <div className="stats">
-              <div className="stat-item">
-                <div className="stat-icon"><i className="fas fa-users"></i></div>
-                <div className="stat-text">
-                  <div className="stat-number">25,000+</div>
-                  <div>Ciudadanos beneficiados</div>
-                </div>
-              </div>
-
-              <div className="stat-item">
-                <div className="stat-icon"><i className="fas fa-trash-alt"></i></div>
-                <div className="stat-text">
-                  <div className="stat-number">70%</div>
-                  <div>Menos residuos en calles</div>
-                </div>
-              </div>
-
-              <div className="stat-item">
-                <div className="stat-icon"><i className="fas fa-tree"></i></div>
-                <div className="stat-text">
-                  <div className="stat-number">45%</div>
-                  <div>Más material reciclado</div>
-                </div>
+          {/* Información adicional (Adaptada) */}
+          <div className="alerta-info">
+            <div className="alerta-content">
+              <AlertCircle className="alerta-icon" size={24} />
+              <div>
+                <h3 className="alerta-titulo">Administración Central</h3>
+                <p className="alerta-texto">
+                  Revisa el estado general del sistema y prioriza las tareas en las secciones de gestión para mantener la plataforma funcionando correctamente.
+                </p>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Cómo funciona */}
-      <section id="como-funciona" className="how-it-works">
-        <div className="container">
-          <div className="section-title">
-            <h2>¿Cómo funciona Zero Waste?</h2>
-            <p>
-              Un sistema integrado que combina infraestructura, tecnología y comunidad
-              para transformar la gestión de residuos
-            </p>
-          </div>
-
-          <div className="steps">
-            {[
-              { num: "01", icon: "fa-trash-alt", title: "Puntos Ecológicos", text: "Instalación de contenedores..." },
-              { num: "02", icon: "fa-map-marked-alt", title: "Mapa Interactivo", text: "Visualización en tiempo real..." },
-              { num: "03", icon: "fa-bell", title: "Alertas Inteligentes", text: "Notificaciones personalizadas..." },
-              { num: "04", icon: "fa-mobile-alt", title: "App Zero Waste", text: "Aplicación móvil para gestionar..." },
-              { num: "05", icon: "fa-graduation-cap", title: "Educación Ambiental", text: "Programas comunitarios..." },
-              { num: "06", icon: "fa-chart-line", title: "Monitoreo y Reportes", text: "Sistema de seguimiento..." }
-            ].map((step, i) => (
-              <div className="step" key={i}>
-                <div className="step-number">{step.num}</div>
-                <div className="step-icon"><i className={`fas ${step.icon}`}></i></div>
-                <h3>{step.title}</h3>
-                <p>{step.text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Beneficios */}
-      <section id="beneficios" className="benefits">
-        <div className="container">
-          <div className="section-title">
-            <h2>Beneficios Transformadores</h2>
-            <p>Impacto positivo en comunidades y medio ambiente a través de Zero Waste</p>
-          </div>
-
-          <div className="benefits-grid">
-            {[
-              { icon: "fa-leaf", title: "Reducción de Contaminación", text: "Disminución significativa..." },
-              { icon: "fa-users", title: "Inclusión Comunitaria", text: "Participación activa de ciudadanos..." },
-              { icon: "fa-chart-pie", title: "Eficiencia Operativa", text: "Optimización de rutas con IA..." },
-              { icon: "fa-seedling", title: "Cultura Ambiental", text: "Promoción de hábitos sostenibles..." },
-              { icon: "fa-wallet", title: "Ahorro Económico", text: "Reducción de costos de limpieza..." },
-              { icon: "fa-shield-alt", title: "Seguridad Sanitaria", text: "Menor proliferación de enfermedades..." }
-            ].map((benefit, i) => (
-              <div className="benefit-card" key={i}>
-                <i className={`fas ${benefit.icon}`}></i>
-                <h3>{benefit.title}</h3>
-                <p>{benefit.text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* App Preview */}
-      <section id="app" className="app-preview">
-        <div className="container">
-          <div className="app-container">
-            <div className="app-image">
-              <img src={logo} alt="Zero Waste App" width="300" height="400" />
-            </div>
-            <div className="app-content">
-              <h2>La App Zero Waste</h2>
-              <p>
-                Tu compañera para construir una Bogotá más limpia. Gestiona recolecciones,
-                aprende sobre reciclaje y contribuye al cambio desde tu celular.
-              </p>
-
-              <div className="app-features">
-                <div className="feature">
-                  <i className="fas fa-map-marker-alt"></i>
-                  <div className="feature-content">
-                    <h4>Mapa Interactivo</h4>
-                    <p>Visualiza rutas de recolección...</p>
-                  </div>
-                </div>
-                <div className="feature">
-                  <i className="fas fa-bell"></i>
-                  <div className="feature-content">
-                    <h4>Alertas Personalizadas</h4>
-                    <p>Recibe notificaciones antes del paso...</p>
-                  </div>
-                </div>
-                <div className="feature">
-                  <i className="fas fa-book"></i>
-                  <div className="feature-content">
-                    <h4>Guías Educativas</h4>
-                    <p>Aprende a separar residuos...</p>
-                  </div>
-                </div>
-                <div className="feature">
-                  <i className="fas fa-calendar-check"></i>
-                  <div className="feature-content">
-                    <h4>Solicitud de Recolección</h4>
-                    <p>Solicita recolección especial...</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="app-stores">
-                <a href="https://play.google.com/store" className="app-btn">
-                  <i className="fab fa-google-play"></i>
-                  <div className="app-btn-text">
-                    <span>Descarga en</span>
-                    <span>Google Play</span>
-                  </div>
-                </a>
-                <a href="https://www.apple.com/co/app-store/" className="app-btn">
-                  <i className="fab fa-apple"></i>
-                  <div className="app-btn-text">
-                    <span>Disponible en</span>
-                    <span>App Store</span>
-                  </div>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonios */}
-      <section id="testimonios" className="testimonials">
-        <div className="container">
-          <div className="section-title">
-            <h2>Lo que dicen nuestras comunidades</h2>
-            <p>Historias reales de transformación en barrios de Bogotá</p>
-          </div>
-
-          <div className="testimonials-container">
-            <div className="testimonial loading">
-              <div className="testimonial-text">
-                "Gracias a Zero Waste, nuestro barrio ha cambiado completamente..."
-              </div>
-              <div className="testimonial-author">
-                <div className="author-avatar"><img src="" alt="" /></div>
-                <div className="author-info">
-                  <h4>María Rodríguez</h4>
-                  <p>Líder comunitaria, Ciudad Bolívar</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="testimonial loading">
-              <div className="testimonial-text">
-                "Como recicladora, este proyecto me ha dado un trabajo formal y estable..."
-              </div>
-              <div className="testimonial-author">
-                <div className="author-avatar"><img src="" alt="" /></div>
-                <div className="author-info">
-                  <h4>Lina Cortes</h4>
-                  <p>Recicladora formalizada, Bonanza</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="cta">
-        <div className="container">
-          <h2>¡Únete a la Revolución Zero Waste!</h2>
-          <p>
-            Descarga nuestra app, participa en nuestras capacitaciones o conviértete en aliado
-            para transformar la gestión de residuos en Bogotá.
-          </p>
-          <div className="cta-btns">
-            <a href="#" className="btn btn-accent">Descargar la App</a>
-            <a href="#" className="btn btn-outline">Ser Aliado</a>
-            <a href="#" className="btn btn-outline">Donar al Proyecto</a>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer id="contacto">
-        <div className="container">
-          <div className="footer-content">
-            <div className="footer-section footer-about">
-              <h3>Zero Waste</h3>
-              <p>
-                Transformando la gestión de residuos en sectores vulnerables de Bogotá
-                mediante tecnología, infraestructura y participación comunitaria.
-              </p>
-              <div className="social-links">
-                <a href="https://wa.me/qr/F56TCJUQH4GHM1"><i className="fab fa-whatsapp"></i></a>
-                <a href="https://www.facebook.com"><i className="fab fa-facebook-f"></i></a>
-                <a href="https://www.instagram.com"><i className="fab fa-instagram"></i></a>
-              </div>
-            </div>
-
-            <div className="footer-section">
-              <h3>Enlaces Rápidos</h3>
-              <ul className="footer-links">
-                <li><a href="#inicio"><i className="fas fa-chevron-right"></i> Inicio</a></li>
-                <li><a href="#como-funciona"><i className="fas fa-chevron-right"></i> Cómo Funciona</a></li>
-                <li><a href="#beneficios"><i className="fas fa-chevron-right"></i> Beneficios</a></li>
-                <li><a href="#app"><i className="fas fa-chevron-right"></i> La App</a></li>
-                <li><a href="#testimonios"><i className="fas fa-chevron-right"></i> Testimonios</a></li>
-              </ul>
-            </div>
-
-            <div className="footer-section">
-              <h3>Recursos</h3>
-              <ul className="footer-links">
-                <li><a href="#"><i className="fas fa-file-pdf"></i> Guía de Separación</a></li>
-                <li><a href="#"><i className="fas fa-map-marked-alt"></i> Mapa de Contenedores</a></li>
-                <li><a href="#"><i className="fas fa-video"></i> Tutoriales</a></li>
-                <li><a href="#"><i className="fas fa-book"></i> Informes de Impacto</a></li>
-                <li><a href="#"><i className="fas fa-newspaper"></i> Prensa</a></li>
-              </ul>
-            </div>
-
-            <div className="footer-section">
-              <h3>Contacto</h3>
-              <ul className="footer-links">
-                <li><a href="#"><i className="fas fa-envelope"></i> infozerowaste@gmail.com</a></li>
-                <li><a href="#"><i className="fas fa-phone"></i> +57 3248477104</a></li>
-                <li><a href="#"><i className="fas fa-map-marker-alt"></i> Carrera 15 # 88-64, Bogotá</a></li>
-                <li><a href="#"><i className="fas fa-headset"></i> Soporte Técnico</a></li>
-                <li><a href="#"><i className="fas fa-hands-helping"></i> Voluntariado</a></li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="footer-bottom">
-            <p>&copy; 2025 Zero Waste. Todos los derechos reservados</p>
-          </div>
-        </div>
-      </footer>
-    </>
+        </main>
+      </div>
+    </div>
   );
 };
 
