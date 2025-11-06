@@ -5,10 +5,7 @@ import {
   Map, Plus, CheckCircle, Clock, AlertCircle, Trash2, 
   Users, Building, Truck, Edit, List
 } from 'lucide-react';
-// Asegúrate de cambiar o adaptar el CSS:
-// import "../styles/ciudadano.css" 
-// A:
-import "../styles/Admin.css" // <-- Asegúrate de tener este archivo o ajusta la ruta
+import "../styles/admin.css" // <-- Asegúrate de tener este archivo o ajusta la ruta
 
 // 1. Renombrar el componente a Admin
 const Admin = () => {
